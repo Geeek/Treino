@@ -1,6 +1,6 @@
 {
-  "name": "Treino",
-  "short_name": "Treino",
+  "name": "Gymtrack",
+  "short_name": "Gymtrack",
   "description": "Registro de treinos de academia, 100% offline.",
   "lang": "pt-BR",
   "start_url": "./",
