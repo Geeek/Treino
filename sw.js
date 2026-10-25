@@ -4,5 +4,5 @@ const IMGS=["Ab_Crunch_Machine-0.jpg", "Ab_Crunch_Machine-1.jpg", "Ab_Roller-0.j
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(async c=>{await c.addAll(FILES);await Promise.allSettled(IMGS.map(f=>c.add("img/"+f)))}).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET"||new URL(r.url).origin!==location.origin)return;
-  if(r.mode==="navigate"){e.respondWith(fetch(r).then(n=>{const c=n.clone();caches.open(V).then(x=>x.put("index.html",c));return n}).catch(()=>caches.match("index.html")));return}
+  if(r.mode==="navigate"){const app=/\/(index\.html)?$/.test(new URL(r.url).pathname);e.respondWith(fetch(r).then(n=>{if(app&&n.ok){const c=n.clone();caches.open(V).then(x=>x.put("index.html",c))}return n}).catch(()=>app?caches.match("index.html"):caches.match(r).then(c=>c||caches.match("index.html"))));return}
   e.respondWith(caches.match(r,{ignoreSearch:true}).then(c=>c||fetch(r).then(n=>{const c2=n.clone();caches.open(V).then(x=>x.put(r,c2));return n}).catch(()=>caches.match("index.html"))))});
