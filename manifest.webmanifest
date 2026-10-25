@@ -1,7 +1,7 @@
 {
   "name": "Gymtrack",
   "short_name": "Gymtrack",
-  "description": "Registro de treinos de academia, 100% offline.",
+  "description": "Registro de treinos de academia. Funciona offline e sincroniza na nuvem.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
