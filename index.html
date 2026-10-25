@@ -181,8 +181,8 @@ async function gtSync(){if(DEMO||!GT.u||!window.GTFB)return;if(GT.busy){GT.again
   if(!m.exists()){gtSafe();t=await gtPush(local,[])}// nuvem vazia: primeiro envio do que está no celular
   else{const nv=m.data(),anos=[],cH=[];hs.forEach(x=>{anos.push(x.id);try{JSON.parse(x.data().treinos||"[]").forEach(h=>cH.push(h))}catch(e){}});
    const cloud=Object.assign({H:[],R:[],B:[]},JSON.parse(nv.dados||"{}"),{H:cH}),ct=nv.t||0,first=ss.uid!==uid||!ss.t;
-   if(first){if(gtEmpty(local)){gtApply(cloud);t=ct}else{const lt=+localStorage.getItem(K("st"))||0;gtApply(gtMerge(local,cloud,lt>=ct));t=await gtPush(gtSnap(),anos)}}
-   else if(ct>ss.t){if(ss.dirty){gtApply(gtMerge(local,cloud,true));t=await gtPush(gtSnap(),anos)}else{gtApply(cloud);t=ct}}
+   if(first){if(gtEmpty(local)){gtApply(cloud);t=ct}else{const lt=+localStorage.getItem(K("st"))||0;gtApply(gtMerge(local,cloud,gtEmpty(cloud)||lt>=ct));t=await gtPush(gtSnap(),anos)}}
+   else if(ct>ss.t){if(ss.dirty){gtApply(gtMerge(local,cloud,true));t=await gtPush(gtSnap(),anos)}else if(gtEmpty(cloud)&&!gtEmpty(local)){t=await gtPush(local,anos)}else{gtApply(cloud);t=ct}}
    else if(ss.dirty)t=await gtPush(local,anos);else t=ss.t}
   gtSS(Object.assign({uid,t},GT.gen==g0?{dirty:0}:{}));GT.st=GT.gen==g0?"ok":"pend";GT.msg="";GT.when=Date.now();if(GT.gen!=g0)GT.again=1}
  catch(e){const c=e&&e.code||"";if(c=="permission-denied"){GT.msg="Essa conta Google não tem acesso ao Gymtrack.";GT.st="";gtSS({uid:null,t:0,dirty:0});try{await F.sair()}catch(x){}}
