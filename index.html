@@ -10,14 +10,28 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
+<script>try{if((localStorage.getItem("gt-tema")||"b")=="b")document.documentElement.dataset.theme="gold"}catch(e){}</script>
 
 
 
 
 <style>
-:root{--bg:#EEF1F6;--sf:#fff;--ink:#1B2340;--mu:#6B7494;--ln:#DCE1EC;--ac:#2F3BFF;--oa:#fff;--dn:#C6F432;--od:#1B2340;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root{--okc:#2F9E62;--wnc:#D99A06;--bdc:#E5484D;--bg:#EEF1F6;--sf:#fff;--ink:#1B2340;--mu:#6B7494;--ln:#DCE1EC;--ac:#2F3BFF;--oa:#fff;--dn:#C6F432;--od:#1B2340;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1426;--sf:#192040;--ink:#EDF0FA;--mu:#9AA3C4;--ln:#2A3363;--ac:#6E78FF;--oa:#0F1426}}
 :root[data-theme="dark"]{--bg:#0F1426;--sf:#192040;--ink:#EDF0FA;--mu:#9AA3C4;--ln:#2A3363;--ac:#6E78FF;--oa:#0F1426}
+:root[data-theme="gold"]{--bg:#0E0F12;--sf:#18191E;--ink:#ECE7DC;--mu:#8E8A80;--ln:#2C2B28;--ac:#D9B45A;--oa:#17130A;--dn:#D9B45A;--od:#17130A;--okc:#3DD68C;--wnc:#F5B83D;--bdc:#F2555A}
+:root[data-theme="gold"] h1{color:var(--ac)}
+.sdgc{padding:10px 14px}.sdgt{font-weight:800;font-size:15px;margin:2px 0;color:var(--ac)}
+.sdrw{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:1px solid var(--ln);background:none;padding:10px 0;text-align:left;font-size:15px;color:var(--ink)}
+.sdgc .sdrw:last-of-type,.card>.sdrw:last-child{border-bottom:0}
+.sddot{width:10px;height:10px;border-radius:50%;flex:none;display:inline-block}.sdn{flex:1;min-width:0;font-weight:600}.sdsp{width:46px;flex:none}
+.sdv{font-weight:800;text-align:right;white-space:nowrap}.sdv small{font-weight:600;color:var(--mu);font-size:11px}
+.sdar{min-width:44px;text-align:right;font-size:12px;color:var(--mu);white-space:nowrap}
+.sdmais{border:0;background:none;color:var(--ac);font-weight:700;font-size:13px;padding:10px 0 2px}
+.sdbx{font-size:10px;font-weight:800;background:var(--wnc);color:#1A1405;border-radius:6px;padding:1px 5px;vertical-align:1px;white-space:nowrap}
+.sdbx2{margin-top:8px;font-size:13px;font-weight:700;color:var(--wnc)}
+.sdpill{color:#111;font-size:12px;font-weight:800;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.sdpgc{width:100%;background:#fff;border-radius:8px;margin-bottom:10px;display:block}.sdres{opacity:.75}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -89,7 +103,7 @@ a.sec{text-decoration:none;color:inherit;display:inline-block}a.sec.sel{color:va
 <div class="rb" id="ut" style="bottom:calc(72px + env(safe-area-inset-bottom,0px))"></div>
 <div class="rb" id="rb"></div>
 <script>
-const VERSAO="0.44";
+const VERSAO="0.45";
 const DEMO=(()=>{try{return localStorage.getItem("hv-demo")=="1"}catch(e){return false}})(),K=n=>(DEMO?"hd-":"hv-")+n;
 const LIB=[["supino-hammer","Supino reto Hammer","Peito"],["cadeira-ext","Cadeira extensora","Quadríceps"],["rot-int","Rotação interna de ombro","Ombro"],["triceps-corda","Tríceps corda","Tríceps"],["agach-banco","Agachamento no banco","Quadríceps"],["supino-reto","Supino reto com barra","Peito"],["supino-inc","Supino inclinado com halteres","Peito"],["crucifixo","Crucifixo máquina","Peito"],["puxada","Puxada frontal","Costas"],["remada","Remada baixa","Costas"],["desenv","Desenvolvimento com halteres","Ombro"],["elev-lat","Elevação lateral","Ombro"],["rosca","Rosca direta","Bíceps"],["rosca-mart","Rosca martelo","Bíceps"],["triceps-testa","Tríceps testa","Tríceps"],["leg","Leg press 45°","Quadríceps"],["mesa-flex","Mesa flexora","Posterior"],["stiff","Stiff","Posterior"],["gluteo","Elevação pélvica","Glúteos"],["panturrilha","Panturrilha em pé","Panturrilha"],["abdominal","Abdominal na máquina","Abdômen"],["prancha","Prancha","Abdômen"]].map(([id,n,m])=>({id,n,m}));
 const slug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),nz=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -135,8 +149,8 @@ let G=0,VL={};try{G=+localStorage.getItem(K("g"))||0;VL=JSON.parse(localStorage.
 let PL={total:24,start:iso(new Date()),end:""};try{const x=JSON.parse(localStorage.getItem(K("pl")));if(x&&x.total)PL=x;else localStorage.setItem(K("pl"),JSON.stringify(PL))}catch(e){}
 const pn=()=>PL.start?H.filter(h=>h.d>=PL.start).length:H.length;
 let utT;function showUndo(l,f){S.undo=f;const u=$("ut");u.innerHTML=`<span>${l}</span><button data-a="undo">Desfazer</button>`;u.style.display="flex";clearTimeout(utT);utT=setTimeout(()=>{u.style.display="none";S.undo=null},8000)}
-const snap=()=>({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),C:LIB.filter(e=>/^c\d+$/.test(e.id))});
-const save=()=>{gtPre();try{localStorage.setItem(K("pl"),JSON.stringify(PL));localStorage.setItem(K("g"),G);localStorage.setItem(K("v"),JSON.stringify(VL));localStorage.setItem(K("p"),JSON.stringify(P));localStorage.setItem(K("ps"),JSON.stringify(PS));localStorage.setItem(K("b"),JSON.stringify(B));localStorage.setItem(K("h"),JSON.stringify(H));localStorage.setItem(K("r"),JSON.stringify(R))}catch(e){}gtSaved()};
+const snap=()=>({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),C:LIB.filter(e=>/^c\d+$/.test(e.id)),EX:SD?SD.get():undefined});
+const save=()=>{gtPre();try{localStorage.setItem(K("pl"),JSON.stringify(PL));localStorage.setItem(K("g"),G);localStorage.setItem(K("v"),JSON.stringify(VL));localStorage.setItem(K("p"),JSON.stringify(P));localStorage.setItem(K("ps"),JSON.stringify(PS));localStorage.setItem(K("b"),JSON.stringify(B));localStorage.setItem(K("h"),JSON.stringify(H));localStorage.setItem(K("r"),JSON.stringify(R))}catch(e){}if(SD)SD.persist();gtSaved()};
 let S={tab:"treino",live:null,q:"",cm:0,rest:null,discard:false};try{const l=JSON.parse(localStorage.getItem(K("lv")));if(l&&Array.isArray(l.ex)&&l.ex.length)S.live=l}catch(e){}
 let UX={};try{UX=JSON.parse(localStorage.getItem(K("u")))||{}}catch(e){}
 const LB=0.45359237,r1=x=>Math.round(x*10)/10,r2=x=>Math.round(x*100)/100,svU=()=>{try{localStorage.setItem(K("u"),JSON.stringify(UX))}catch(e){}};
@@ -169,27 +183,29 @@ function gtMerge(l,c,lw){const hx=new Set(gtHX()),out=new Map(),ks=new Set();
  const add=h=>{const id=h.id||("k"+gtKey(h));if(out.has(id)||ks.has(gtKey(h)))return;out.set(id,h);ks.add(gtKey(h))};
  const cH=c.H.filter(h=>!hx.has(h.id));(lw?[...l.H,...cH]:[...cH,...l.H]).forEach(add);
  const o=Object.assign({},lw?l:c,{H:[...out.values()].sort((a,b)=>String(a.d).localeCompare(String(b.d)))});
- const cc=new Map();[...(lw?c.C:l.C)||[],...(lw?l.C:c.C)||[]].forEach(e=>e&&cc.set(e.id,e));o.C=[...cc.values()];return o}
-async function gtPush(d,anosNuvem){const F=GTFB,uid=GT.u.uid,t=Date.now(),b=F.writeBatch(F.db),{H:hh,...rest}=d,por={};
+ const cc=new Map();[...(lw?c.C:l.C)||[],...(lw?l.C:c.C)||[]].forEach(e=>e&&cc.set(e.id,e));o.C=[...cc.values()];o.EX=SD.merge(l.EX,c.EX);return o}
+async function gtPush(d,anosNuvem){const F=GTFB,uid=GT.u.uid,t=Date.now(),b=F.writeBatch(F.db),{H:hh,EX:ex,...rest}=d,por={};
  hh.forEach(h=>{const y=String(h.d||"0000").slice(0,4);(por[y]=por[y]||[]).push(h)});
  [...new Set([...Object.keys(por),...anosNuvem])].forEach(y=>b.set(F.doc(F.db,"usuarios",uid,"historico",y),{treinos:JSON.stringify(por[y]||[]),n:(por[y]||[]).length,t}));
+ const ey={};((ex&&ex.c)||[]).forEach(c=>{const y=String(c.data||"0000").slice(0,4);(ey[y]=ey[y]||[]).push(c)});[...new Set([...Object.keys(ey),...SD.anos()])].forEach(y=>b.set(F.doc(F.db,"usuarios",uid,"saude",y),{coletas:JSON.stringify(ey[y]||[]),n:(ey[y]||[]).length,t}));if(ex)rest.EXD={del:ex.del||[],pdel:ex.pdel||[]};
  b.set(F.doc(F.db,"usuarios",uid),{v:1,t,dados:JSON.stringify(rest),anos:Object.keys(por),app:VERSAO,em:F.serverTimestamp()});
- await gtTmo(b.commit(),25000);return t}
+ await gtTmo(b.commit(),25000);SD.anos(Object.keys(ey));return t}
 async function gtSync(){if(DEMO||!GT.u||!window.GTFB)return;if(GT.busy){GT.again=1;return}
  if(!navigator.onLine){GT.st=gtSG().dirty?"pend":"off";gtUI();return}
  GT.busy=1;GT.st="sync";gtUI();const F=GTFB,uid=GT.u.uid,ss=gtSG(),g0=GT.gen;
- try{const[m,hs]=await gtTmo(Promise.all([F.getDocFromServer(F.doc(F.db,"usuarios",uid)),F.getDocsFromServer(F.collection(F.db,"usuarios",uid,"historico"))]),20000);
+ try{const[m,hs,sv]=await gtTmo(Promise.all([F.getDocFromServer(F.doc(F.db,"usuarios",uid)),F.getDocsFromServer(F.collection(F.db,"usuarios",uid,"historico")),F.getDocsFromServer(F.collection(F.db,"usuarios",uid,"saude"))]),20000);
   let local=gtSnap(),t=null;
   if(!m.exists()){gtSafe();t=await gtPush(local,[])}// nuvem vazia: primeiro envio do que está no celular
   else{const nv=m.data(),anos=[],cH=[];hs.forEach(x=>{anos.push(x.id);try{JSON.parse(x.data().treinos||"[]").forEach(h=>cH.push(h))}catch(e){}});
    const cloud=Object.assign({H:[],R:[],B:[]},JSON.parse(nv.dados||"{}"),{H:cH}),ct=nv.t||0,first=ss.uid!==uid||!ss.t;
+   {const sA=[],sC=[];sv.forEach(x=>{sA.push(x.id);try{JSON.parse(x.data().coletas||"[]").forEach(c=>sC.push(c))}catch(e){}});SD.anos(sA);const xd=cloud.EXD||{};delete cloud.EXD;if(sC.length||xd.del)cloud.EX={c:sC,del:xd.del||[],pdel:xd.pdel||[]}}
    if(first){if(gtEmpty(local)){gtApply(cloud);t=ct}else{const lt=+localStorage.getItem(K("st"))||0;gtApply(gtMerge(local,cloud,gtEmpty(cloud)||lt>=ct));t=await gtPush(gtSnap(),anos)}}
    else if(ct>ss.t){if(ss.dirty){gtApply(gtMerge(local,cloud,true));t=await gtPush(gtSnap(),anos)}else if(gtEmpty(cloud)&&!gtEmpty(local)){t=await gtPush(local,anos)}else{gtApply(cloud);t=ct}}
    else if(ss.dirty)t=await gtPush(local,anos);else t=ss.t}
   gtSS(Object.assign({uid,t,ok:1},GT.gen==g0?{dirty:0}:{}));GT.st=GT.gen==g0?"ok":"pend";GT.msg="";GT.when=Date.now();if(GT.gen!=g0)GT.again=1}
  catch(e){const c=e&&e.code||"";if(c=="permission-denied"){GT.msg="Essa conta Google não tem acesso ao Gymtrack. Se quiser usar, toque em “Quer usar o Gymtrack?”.";GT.st="";gtSS({uid:null,t:0,dirty:0,ok:0});try{await F.sair()}catch(x){}}
   else{GT.st=gtSG().dirty?"pend":"erro";GT.msg=c=="timeout"||c=="unavailable"?"Conexão instável, tento de novo depois.":"Não consegui sincronizar ("+(c||"erro")+").";}}
- GT.busy=0;gtUI();if(GT.again){GT.again=0;GT.sched(1500)}}
+ GT.busy=0;gtUI();if(SD)SD.up();if(GT.again){GT.again=0;GT.sched(1500)}}
 function gtPrev(){try{const p=JSON.parse(localStorage.getItem("hv-antes-nuvem"));if(p&&p.d)return p}catch(e){}return null}
 function contaCard(){let h;const p=gtPrev(),u=GT.u;
  if(DEMO)h=`<span class="mu">A conta e a nuvem ficam desligadas no modo demonstração.</span>`;
@@ -311,7 +327,341 @@ const best=id=>Math.max(0,...H.flatMap(h=>h.ex.filter(e=>e.id==id).flatMap(e=>e.
 const vol=ex=>ex.reduce((a,e)=>a+e.sets.reduce((b,s)=>b+(s.t=="W"?0:s.w*s.r),0),0);
 function mkSets(id,n,r,w){const p=prev(id);return Array.from({length:n},(_,k)=>{const q=p&&(p[k]||p[p.length-1]);return{w:q?q.w:w,r:q?q.r:r,d:false,pr:false,t:"N"}})}
 function start(name,list,o){S.live=Object.assign({name,t0:Date.now(),ex:list.map(([id,n,r,w,p])=>({id,note:"",p:p||"",sets:mkSets(id,n,r,w)}))},o||{});S.discard=false;renderLive()}
-const nav=[["treino","Treino"],["hist","Histórico"],["ex","Exercícios"],["inj","Aplicações"],["perfil","Perfil"]];
+const nav=[["treino","Treino"],["hist","Histórico"],["ex","Exercícios"],["inj","Aplicações"],["saude","Saúde"],["perfil","Perfil"]];
+/* ===== Aba Saúde (0.45): leitura do laudo, exames, coletas, IA, tema ===== */
+var SD=(()=>{
+/* Leitor de laudos (Gymtrack · aba Saúde). Recebe as linhas de cada página
+   (colunas separadas por " | ") e devolve {lab, os, data, idade, itens:[...]}. */
+const SN=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\.{2,}/g," ").replace(/\s+/g," ").trim();
+const NUM=s=>{s=String(s).trim().replace(/%$/,"");if(!/^\d[\d.]*(,\d+)?$/.test(s))return NaN;return parseFloat(s.replace(/\.(?=\d{3}(\D|$))/g,"").replace(/\./g,".").replace(",","."))};
+const VAL=/^(?:[<>]=?\s*)?\d[\d.]*(?:,\d+)?$|^(?:inferior|superior) a \d[\d.,]*$/i;
+/* catálogo: chave, nome, grupo, teste sobre "titulo|rotulo" normalizado */
+const CAT=[
+["hem","Hemácias","sangue",/^hemograma[^|]*\|eritrocitos/],["hb","Hemoglobina","sangue",/^hemograma[^|]*\|hemoglobina/],["ht","Hematócrito","sangue",/^hemograma[^|]*\|hematocrito/],
+["vcm","VCM","sangue",/^hemograma[^|]*\|v\.?\s?c\.?\s?m$/],["hcm","HCM","sangue",/^hemograma[^|]*\|h\.?\s?c\.?\s?m$/],["chcm","CHCM","sangue",/^hemograma[^|]*\|c\.?\s?h\.?\s?c\.?\s?m$/],["rdw","RDW","sangue",/^hemograma[^|]*\|rdw/],
+["leu","Leucócitos","sangue",/^hemograma[^|]*\|leucocitos$/],["neu","Neutrófilos","sangue",/^hemograma[^|]*\|neutrofilos$/],["eos","Eosinófilos","sangue",/^hemograma[^|]*\|eosinofilos$/],
+["bas","Basófilos","sangue",/^hemograma[^|]*\|basofilos$/],["lin","Linfócitos","sangue",/^hemograma[^|]*\|linfocitos$/],["mon","Monócitos","sangue",/^hemograma[^|]*\|monocitos$/],
+["plq","Plaquetas","sangue",/^hemograma[^|]*\|plaquetas/],["mpv","MPV","sangue",/^hemograma[^|]*\|mpv/],
+["glic","Glicose","acucar",/^dosagem de glicose\|/],["ins","Insulina","acucar",/^insulina\||homa.*\|insulina/],["homa","HOMA-IR","acucar",/\|homa ir/],
+["a1c","Hemoglobina glicada","acucar",/^hemoglobina glicada\|$/],
+["ct","Colesterol total","colesterol",/^colesterol total\|/],["hdl","HDL","colesterol",/^colesterol hdl\|/],["ldl","LDL","colesterol",/^colesterol ldl\|/],["tg","Triglicerídeos","colesterol",/^triglicerideos\|/],
+["tgo","TGO","figado",/^tgo/],["tgp","TGP","figado",/^tgp/],["ggt","GGT","figado",/^gama glutamil/],["fa","Fosfatase alcalina","figado",/^fosfatase alcalina/],
+["bt","Bilirrubina total","figado",/\|bilirrubina total/],["bd","Bilirrubina direta","figado",/\|bilirrubina direta/],["bi","Bilirrubina indireta","figado",/\|bilirrubina indireta/],
+["pt","Proteínas totais","figado",/\|proteinas totais/],["alb","Albumina","figado",/^proteinas.*\|albumina$/],["glob","Globulinas","figado",/\|globulinas/],["ag","Relação A/G","figado",/\|relacao albumina\/globulina/],
+["ure","Ureia","rim",/^ureia/],["cre","Creatinina","rim",/^creatinina\|creatinina/],["egfr","eGFR","rim",/\|egfr/],["na","Sódio","rim",/^sodio/],["k","Potássio","rim",/^potassio/],
+["tsh","TSH","tireoide",/^tsh/],["t4l","T4 livre","tireoide",/^t4 l /],["t4","T4","tireoide",/^t4 - tiroxina/],
+["vitd","Vitamina D","vitaminas",/^vitamina d/],["b12","Vitamina B12","vitaminas",/^vitamina b12/],["fe","Ferro","vitaminas",/^ferro\|/],["ferr","Ferritina","vitaminas",/^ferritina/],["zn","Zinco","vitaminas",/^zinco/],
+["tt","Testosterona total","hormonios",/^testosterona total/],["tl","Testosterona livre","hormonios",/\|testosterona livre/],["tb","Testosterona biodisponível","hormonios",/\|testosterona biodisponivel/],
+["e2","Estradiol","hormonios",/^estradiol/],["shbg","SHBG","hormonios",/^globulina ligadora/],["prl","Prolactina","hormonios",/^prolactina/],
+["psa","PSA total","hormonios",/\|psa total$/],["psal","PSA livre","hormonios",/\|psa livre$/],["psar","Relação PSA total/livre","hormonios",/\|relacao psa/],
+["lh","LH","hormonios",/^(lh|hormonio luteinizante)/],["fsh","FSH","hormonios",/^(fsh|hormonio foliculo)/],["ck","CK","hormonios",/^(ck|cpk|creatinoquinase|creatina quinase)/]];
+const BAD=/\bdias\b|meses|femin|mulher|gestant|trimestre|crianc|adolesc|estagio|f \/ m|carencia|exposicao|risco|indesejavel|diabet|grupos de risco|sem valor|relacao albumina/;
+/* lê uma faixa de referência de um pedaço de texto, levando em conta a idade */
+function faixa(t,idade){let s=SN(t).replace(/\([^)]*\)/g," ");if(!s||BAD.test(s))return null;
+ const ag=s.match(/(\d+)\s*anos?\s*a\s*(\d+)\s*anos/)||s.match(/(\d+)\s*a\s*(\d+)\s*anos/),ge=s.match(/(?:superior a|maior que|>|acima de)\s*(\d+)\s*anos/),lt=s.match(/(?:abaixo de|<)\s*(\d+)\s*anos/),fr=s.match(/a partir de\s*(\d+)\s*anos/);
+ if(ag&&(idade<+ag[1]||idade>+ag[2]))return null;if(ge&&idade<=+ge[1])return null;if(lt&&idade>=+lt[1])return null;if(fr&&idade<+fr[1])return null;
+ s=s.replace(/\d+\s*anos?\s*a\s*\d+\s*anos\s*:?/g," ").replace(/(\d+\s*a\s*\d+|(superior a|maior que|>|<|acima de|abaixo de|a partir de)\s*\d+)\s*anos\s*:?/g," ").replace(/10\^6/g,"");
+ let m=s.match(/(\d[\d.]*(?:,\d+)?)\s*(?:-|a|e)\s*(\d[\d.]*(?:,\d+)?)/);if(m)return{min:NUM(m[1]),max:NUM(m[2])};
+ m=s.match(/(?:inferior ou igual|inferior a|menor que|ate|<=?)\s*(\d[\d.]*(?:,\d+)?)/);if(m)return{max:NUM(m[1]),le:/igual|<=/.test(s)};
+ m=s.match(/(?:superior a|maior que|>=?)\s*(\d[\d.]*(?:,\d+)?)/);if(m)return{min:NUM(m[1])};return null}
+function lerLaudo(pages){
+ const head=/^(Sr \(a\)|Idade|:|Solicitante|Convênio|Av Perimetral|CNPJ|Tel\.|Assinado eletronicamente|Todo teste|_+$)/;
+ const all=pages.flat(),hj=all.join("\n");
+ const os=(hj.match(/Nro\. da OS\.\s*\|?\s*:\s*\|?\s*([\d-]+)/)||[])[1]||"",at=(hj.match(/Atend\.\s*\|?\s*:\s*\|?\s*(\d\d\/\d\d\/\d{4})/)||[])[1]||"";
+ const idade=+((hj.match(/Idade\s*\|?\s*:\s*\|?\s*(\d+)\s*anos/)||[])[1]||40),lab=/HUMANIZALAB/i.test(hj)?"Humanizalab":"";
+ const L=all.filter(l=>!head.test(l.replace(/\s*\|\s*/g," ")));const itens=[],usados=new Set();let tit="",col="",stop=false,cur=null,skip=0;
+ const fim=()=>{cur=null};
+ const add=(rot,v,u,refs)=>{const valor=String(v).trim(),q=(valor.match(/^([<>]=?|inferior a|superior a)/i)||[])[1]||"";
+  const n=NUM(valor.replace(/^([<>]=?|inferior a|superior a)\s*/i,""));
+  const it={titulo:tit,rotulo:rot,valor,num:isNaN(n)?null:n,q:q?(/^(<|inferior)/i.test(q)?"<":">"):"",un:(u||"").trim(),refTxt:"",ref:null,coleta:col};
+  const k=SN(tit)+"|"+SN(rot),c=CAT.find(c=>c[3].test(k));if(c){if(usados.has(c[0]))return null;usados.add(c[0]);it.k=c[0];it.nome=c[1];it.g=c[2]}
+  else{if(itens.some(x=>x.k&&!x.k.startsWith("x:")&&SN(x.nome)==SN(rot)&&x.valor==valor))return null;it.k="x:"+SN(tit+" "+rot).replace(/[^a-z0-9]+/g,"-").slice(0,60);if(usados.has(it.k))return null;usados.add(it.k);it.nome=rot&&!/^resultado$/i.test(rot)?(SN(tit).startsWith(SN(rot))?tit:cap(rot)+(/urina/i.test(tit)?" (urina)":"")):cap(tit);it.g=/urin|albumin/i.test(tit)?"rim":"outros"}
+  it.nome=it.nome.replace(/\s*\(gme\)/i," (GME)").replace(/^Ph\b/,"pH").replace(/^Rdw$/,"RDW").replace(/^Mpv$/,"MPV");itens.push(it);cur=it;(refs||[]).forEach(r=>ref(it,r));return it};
+ const ref=(it,t)=>{if(!t||!it||/microalbumin/i.test(it.titulo))return;t=t.replace(/\s*\|\s*/g," ").trim();if(!t)return;
+  if(it.num==null){if(!it.refTxt&&!BAD.test(SN(t)))it.refTxt=t;return}
+  if(!it.ref){const f=faixa(t,idade);if(f){it.ref=f;it.refTxt=t}}};
+ for(let i=0;i<L.length;i++){const l=L[i],c=l.split(" | ").map(x=>x.trim()),j=l.replace(/\s*\|\s*/g," ").trim();
+  if(skip){skip--;continue}
+  if(L[i+1]&&/^Material:/.test(L[i+1])){tit=cap(j);stop=false;fim();continue}
+  let m=j.match(/Coleta\.*:\s*(\d\d\/\d\d\/\d{4})/);if(m){col=m[1];continue}
+  if(/^(Material|Método|Avaliação Microscópica)/.test(j))continue;
+  if(/^Assinatura digital/.test(j)){stop=true;fim();continue}
+  if(stop||/^(Observações gerais|Nota:|Anteriores:|Referência|Fontes)/i.test(j)){stop=true;continue}
+  if(/^\d\d\/\d\d\/\d{4} - /.test(j))continue;
+  /* 1) "Rótulo......: | valor | unidade | referência" */
+  m=c[0].match(/^(.*?)\s*\.{2,}\s*:\s*(.*)$/)||(c[0].match(/^(.+?)\s*:$/)&&c[1]&&/^\.+:$/.test(c[1])?null:null);
+  if(!m&&c[1]&&/^\.{2,}:$/.test(c[1]))m=[0,c[0],""],c.splice(1,1);
+  if(m){let rot=m[1].trim(),rest=[m[2],...c.slice(1)].filter(x=>x!=="");
+   if(/^(livre|biodisponível)$/i.test(rot))continue;
+   if(/^resultado$/i.test(rot))rot="";
+   let v=rest[0]||"",u="",k=1;if(rest[1]&&!VAL.test(rest[1])&&/^[^\d\s]{1,9}$|10\^6/.test(rest[1])&&!/^(ausente|negativ)/i.test(rest[1])){u=rest[1];k=2}
+   if(/hemograma/i.test(tit)&&rest[k]&&VAL.test(rest[k])&&rest[k+1]&&/μL/.test(rest[k+1])){const ab=rest[k],rr=rest.slice(k+2).join(" "),rg=rr.match(/(\d[\d.,]*\s*-\s*\d[\d.,]*)\s*%?\s*(.*)/);
+    add(rot,v,u,[rg?rg[1]:rr]);const a=add(rot+" (absoluto)",ab,"/μL",[rg?rg[2]:""]);if(a){a.nome=cap(rot)+" (absoluto)"}continue}
+   add(rot||"",v,u,[rest.slice(k).join(" ")]);continue}
+  /* 2) "Resultado: | 85,20 mg/dL" */
+  m=j.match(/^Resultado\s*:\s*(.*)$/i);if(m){const p=m[1].match(/^((?:[<>]=?\s*)?\d[\d.,]*)\s*(\S*)\s*(.*)$/);if(p)add("",p[1],p[2],[p[3]]);else{const t=c.slice(1);add("",(t[0]||m[1]).trim(),"",[t.slice(1).join(" ")])}continue}
+  /* 3) eGFR */
+  m=j.match(/^\*?eGFR\s+(superior a|inferior a)?\s*(\d[\d.,]*)\s*(\S+)/i);if(m){add("eGFR",(m[1]?(/sup/i.test(m[1])?">":"<"):"")+m[2],m[3].replace(/²$/,"²"),[]);continue}
+  /* 4) "ROTULO: valor unidade" em maiúsculas */
+  m=j.match(/^([A-ZÀ-Ú0-9][A-ZÀ-Ú0-9 \/().*-]{1,45}):\s*((?:[<>]=?\s*)?\d[\d.,]*)\s*([^\s|]*)\s*(.*)$/);
+  if(m&&!/^(VALOR|MASCULINO|FEMININO|NOTA)/.test(m[1])){if(/glicose m[eé]dia/i.test(m[1])&&/glicada/i.test(tit)){add(m[1],m[2],m[3],[]);continue}add(m[1].trim(),m[2],m[3],[m[4]]);continue}
+  /* 5) "Rótulo | valor | unidade | ..." */
+  const vu=c[1]&&c[1].match(/^((?:[<>]=?\s*)?\d[\d.]*(?:,\d+)?|inferior a \d[\d.,]*|superior a \d[\d.,]*)\s*(\S*)$/i);
+  if(c.length>=2&&vu&&!/:/.test(c[0])&&c[0].length<40&&!/^(Estágio|Exame)/.test(c[0])){let rot=c[0],u=vu[2],k=2;
+   if(!u&&c[2]&&!VAL.test(c[2])&&c[2].length<12&&!/\d\s*[-a]\s*\d/.test(c[2])){u=c[2];k=3}
+   if(/^testosterona$/i.test(rot)&&/^testosterona (livre|biodispon)/i.test(c[2]||"")){rot=c[2].replace(/\s*masculino:?$/i,"");k=3}
+   add(rot,vu[1],u,[c.slice(k).join(" ")]);continue}
+  /* resto: candidata a referência do último resultado */
+  if(cur){const t=j.replace(/^Valor(es)? de Refer[eê]ncia\(?s?\)?:?\s*/i,"");if(/^Testosterona (Livre|Biodispon)/i.test(t))continue;ref(cur,t)}
+ }
+ itens.forEach(it=>{if(it.g=="outros"){const o=itens.find(x=>x.titulo==it.titulo&&x.g!="outros");if(o)it.g=o.g}it.st=status(it)});
+ return{lab,os,data:at,idade,itens}}
+function cap(s){s=String(s).trim().toLowerCase();return s.charAt(0).toUpperCase()+s.slice(1)}
+/* verde = ok, amarelo = limite (últimos 10% da faixa), vermelho = fora, cinza = sem referência */
+function status(it){
+ if(it.num==null){if(!it.refTxt)return"sem";const a=SN(it.valor),b=SN(it.refTxt);return b.includes(a)||a.slice(0,6)===b.slice(0,6)?"ok":"fora"}
+ const r=it.ref;if(!r)return"sem";const v=it.num,lo=r.min,hi=r.max;
+ if(it.q==="<"&&hi!=null&&v<=hi)return"ok";if(it.q===">"&&lo!=null&&v>=lo&&hi==null)return"ok";
+ if(lo!=null&&v<lo)return"fora";if(hi!=null&&(r.le?v>hi:v>=hi&&lo==null?v>hi:v>hi))return"fora";
+ if(lo===0&&hi!=null)return v>=hi*.9?"limite":"ok";if(lo!=null&&hi!=null){const d=(hi-lo)*.1;return v<lo+d||v>hi-d?"limite":"ok"}
+ if(hi!=null)return v>=hi*.9?"limite":"ok";if(lo!=null)return v<=lo*1.1?"limite":"ok";return"sem"}
+
+
+/* ---------- dados ---------- */
+const GRUPOS=[["sangue","Sangue"],["acucar","Açúcar"],["colesterol","Colesterol"],["figado","Fígado"],["rim","Rim"],["tireoide","Tireoide"],["vitaminas","Vitaminas e minerais"],["hormonios","Hormônios"],["outros","Outros exames"]];
+const GN=g=>(GRUPOS.find(x=>x[0]==g)||[0,"Outros exames"])[1];
+const DESTAQUE={sangue:["hb","ht","rdw"]};
+const RESERVA=["lh","fsh","ck"];
+const EXPL={
+hem:"Hemácias: as células vermelhas que levam oxigênio. A reposição de testosterona costuma aumentar.",
+hb:"Hemoglobina: a proteína das hemácias que carrega o oxigênio. Sobe com testosterona e com desidratação.",
+ht:"Hematócrito: quanto do sangue é feito de hemácias. É o exame mais acompanhado em quem faz TRT, porque a testosterona tende a subir esse valor e sangue muito grosso aumenta o risco de trombose.",
+vcm:"VCM: o tamanho médio das hemácias. Ajuda a entender a causa de anemias (falta de ferro, B12 ou ácido fólico).",
+hcm:"HCM: quanto de hemoglobina cada hemácia tem, em média.",
+chcm:"CHCM: a concentração de hemoglobina dentro das hemácias.",
+rdw:"RDW: o quanto as hemácias variam de tamanho entre si. Sobe quando o corpo está produzindo muitas hemácias novas, o que é comum com testosterona, ou em falta de ferro, B12 ou ácido fólico.",
+leu:"Leucócitos: as células de defesa. Sobem em infecções e inflamações, e também depois de treino pesado.",
+neu:"Neutrófilos: as células de defesa mais comuns, que combatem bactérias.",eos:"Eosinófilos: células de defesa ligadas a alergias e parasitas.",bas:"Basófilos: células de defesa raras, ligadas a reações alérgicas.",lin:"Linfócitos: células de defesa que combatem vírus e produzem anticorpos.",mon:"Monócitos: células de defesa que limpam restos de células e microrganismos.",
+plq:"Plaquetas: ajudam o sangue a coagular.",mpv:"MPV: o tamanho médio das plaquetas.",
+glic:"Glicose: o açúcar no sangue em jejum.",ins:"Insulina: o hormônio que coloca o açúcar para dentro das células. Em jejum, valores altos podem indicar resistência à insulina.",
+homa:"HOMA-IR: uma conta feita com a glicose e a insulina de jejum que estima a resistência à insulina. Quanto menor, melhor.",
+a1c:"Hemoglobina glicada: a média do açúcar no sangue nos últimos 2 a 3 meses. Não muda de um dia para o outro.",
+ct:"Colesterol total: a soma de todas as frações de colesterol.",
+hdl:"HDL: o colesterol \"bom\", que tira gordura das artérias. Quanto maior, melhor. Testosterona e outros hormônios costumam baixar.",
+ldl:"LDL: o colesterol \"ruim\", que se acumula nas artérias. A meta depende do seu risco cardiovascular e quem define é o médico.",
+tg:"Triglicerídeos: a gordura do sangue. Sobem com açúcar, álcool e refeição perto da coleta.",
+tgo:"TGO: enzima do fígado e também do músculo. Treino pesado nos dias antes da coleta costuma subir.",
+tgp:"TGP: enzima mais específica do fígado. Também pode subir um pouco com treino pesado.",
+ggt:"GGT: enzima do fígado e das vias biliares. Sobe com álcool e alguns remédios.",
+fa:"Fosfatase alcalina: enzima do fígado e dos ossos.",
+bt:"Bilirrubina total: um pigmento que vem da quebra das hemácias e é eliminado pelo fígado.",bd:"Bilirrubina direta: a parte da bilirrubina que já passou pelo fígado.",bi:"Bilirrubina indireta: a parte da bilirrubina que ainda não passou pelo fígado.",
+pt:"Proteínas totais: a soma das proteínas do sangue (albumina e globulinas).",alb:"Albumina: a principal proteína do sangue, feita pelo fígado.",glob:"Globulinas: proteínas do sangue, incluindo os anticorpos.",ag:"Relação albumina/globulina: a proporção entre as duas.",
+ure:"Ureia: resto da quebra das proteínas, eliminado pelos rins. Sobe com dieta rica em proteína e pouca água.",
+cre:"Creatinina: resto do trabalho do músculo, eliminado pelos rins. Quem tem muita massa muscular ou usa creatina costuma ter valores mais altos.",
+egfr:"eGFR: estimativa de quanto sangue os rins filtram por minuto, calculada a partir da creatinina. Quanto maior, melhor.",
+na:"Sódio: mineral que controla a água do corpo.",k:"Potássio: mineral importante para os músculos e o coração.",
+tsh:"TSH: o hormônio que comanda a tireoide. Alto sugere tireoide lenta; baixo, tireoide acelerada.",t4l:"T4 livre: o hormônio da tireoide que está ativo no sangue.",t4:"T4 total: o hormônio da tireoide, somando a parte livre e a parte presa a proteínas.",
+vitd:"Vitamina D: importante para ossos, músculos e imunidade. Depende de sol e suplementação.",b12:"Vitamina B12: importante para os nervos e para fabricar hemácias.",
+fe:"Ferro: o ferro circulando no sangue naquele momento. Varia bastante ao longo do dia.",ferr:"Ferritina: o estoque de ferro do corpo. Também sobe em inflamações.",zn:"Zinco: mineral ligado à imunidade e à produção de testosterona.",
+tt:"Testosterona total: toda a testosterona do sangue. Em quem faz TRT, o valor depende muito de quantos dias se passaram desde a última aplicação.",
+tl:"Testosterona livre: a parte da testosterona que está ativa, calculada a partir da total, da SHBG e da albumina.",tb:"Testosterona biodisponível: a testosterona livre mais a que está fracamente presa à albumina, que também consegue agir.",
+e2:"Estradiol: o principal estrogênio. No homem, vem em boa parte da conversão da testosterona e sobe junto com ela.",
+shbg:"SHBG: a proteína que prende a testosterona no sangue. Quanto mais SHBG, menos testosterona livre.",
+prl:"Prolactina: hormônio da hipófise. Valores altos podem baixar a libido.",
+psa:"PSA total: proteína produzida pela próstata, usada no acompanhamento da próstata. A testosterona pode aumentar um pouco.",psal:"PSA livre: a parte do PSA que circula solta. Serve para calcular a relação PSA livre/total.",psar:"Relação entre PSA total e livre, usada pelo médico quando o PSA total está alterado.",
+lh:"LH: o hormônio da hipófise que manda os testículos produzirem testosterona. Em quem faz TRT costuma ficar baixo.",
+fsh:"FSH: o hormônio da hipófise ligado à produção de espermatozoides. Em quem faz TRT costuma ficar baixo.",
+ck:"CK: enzima do músculo. Sobe muito depois de treino pesado, principalmente nos 2 a 3 dias antes da coleta."};
+const NOMER={lh:"LH",fsh:"FSH",ck:"CK (creatinoquinase)"};
+let EX={c:[],del:[],pdel:[]};
+try{const x=JSON.parse(localStorage.getItem(K("ex")));if(x&&Array.isArray(x.c))EX=Object.assign({c:[],del:[],pdel:[]},x)}catch(e){}
+const persist=()=>{try{localStorage.setItem(K("ex"),JSON.stringify(EX))}catch(e){}};
+/* item guardado → campos calculados */
+function prep(it){const v=it.corr?it.corr.v:it.valor,q=(String(v).match(/^\s*([<>]=?|inferior a|superior a)/i)||[])[1]||"";const n=NUM(String(v).replace(/^\s*([<>]=?|inferior a|superior a)\s*/i,""));
+ const o=Object.assign({},it,{num:isNaN(n)?null:n,q:q?(/^(<|inferior)/i.test(q)?"<":">"):"",valorEf:v});o.st=status(Object.assign({},o,{valor:v}));return o}
+const coletas=()=>EX.c.slice().sort((a,b)=>a.data.localeCompare(b.data));
+const isoBR=s=>{const m=String(s).match(/(\d\d)\/(\d\d)\/(\d{4})/);return m?m[3]+"-"+m[2]+"-"+m[1]:""};
+const fdc=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"–";
+const fds=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(2,4):"";
+const nfmt=(n,ref)=>{const d=(String(ref).split(",")[1]||"").replace(/\D/g,"").length;return n.toLocaleString("pt-BR",{minimumFractionDigits:Math.min(d,3),maximumFractionDigits:Math.min(d,3)})};
+const urina=it=>it.k.startsWith("x:")&&/urin|albumin/i.test(it.titulo);
+const nomeK=k=>{const c=CAT.find(c=>c[0]==k);return c?c[1]:NOMER[k]||k};
+/* série de um exame ao longo das coletas */
+function serie(k){const out=[];coletas().forEach(c=>{const it=c.itens.find(i=>i.k==k);if(it)out.push({c,it:prep(it)})});return out}
+const COR={ok:"var(--okc)",limite:"var(--wnc)",fora:"var(--bdc)",sem:"var(--mu)"};
+const STX={ok:"Dentro da referência",limite:"No limite",fora:"Fora da referência",sem:"Sem referência no laudo"};
+function spark(s){const p=s.filter(x=>x.it.num!=null);if(p.length<2)return`<span class="sdsp"></span>`;const ys=p.map(x=>x.it.num),lo=Math.min(...ys),hi=Math.max(...ys),W=46,H=16;
+ const pts=p.map((x,i)=>`${(2+i*(W-4)/(p.length-1)).toFixed(1)},${(hi==lo?H/2:H-2-(x.it.num-lo)/(hi-lo)*(H-4)).toFixed(1)}`).join(" ");
+ return`<svg class="sdsp" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${COR[p[p.length-1].it.st]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
+function delta(s){const p=s.filter(x=>x.it.num!=null);if(s.length<2||p.length<2||p[p.length-1]!==s[s.length-1])return"";const a=p[p.length-2].it,b=p[p.length-1].it,d=b.num-a.num;
+ if(Math.abs(d)<1e-9)return`<span class="sdar">=</span>`;const dec=Math.max((String(a.valorEf).split(",")[1]||"").length,(String(b.valorEf).split(",")[1]||"").length);
+ return`<span class="sdar">${d>0?"▲":"▼"} ${Math.abs(d).toLocaleString("pt-BR",{maximumFractionDigits:Math.min(dec,2)})}</span>`}
+function linha(k,ult){const s=serie(k);if(!s.length){if(!RESERVA.includes(k))return"";return`<div class="sdrw sdres"><i class="sddot" style="background:var(--ln)"></i><span class="sdn">${nomeK(k)}</span><span class="mu" style="font-size:12px">aguardando 1º resultado</span></div>`}
+ const l=s[s.length-1],it=l.it,velho=ult&&l.c.id!==ult.id;
+ return`<button class="sdrw" data-a="sd_det" data-v="${esc(k)}"><i class="sddot" style="background:${COR[it.st]}"></i><span class="sdn">${esc(it.nome)}${it.corr?' <span class="sdbx">alterado</span>':""}${velho?`<small class="mu"> · ${fds(l.c.data)}</small>`:""}</span>${spark(s)}<span class="sdv">${esc(it.valorEf)}<small> ${esc(it.un||"")}</small></span>${delta(s)}</button>`}
+/* ---------- tela principal ---------- */
+function tab(A){const cs=coletas(),ult=cs[cs.length-1];S.sdv=S.sdv||"ex";
+ let h=`<h1>Saúde</h1><div class="mu" style="margin:-8px 2px 12px">${ult?`Última coleta ${fdc(ult.data)} · ${esc(ult.lab||"laboratório")}`:"Seus exames de sangue, guardados por anos"}</div>`;
+ if(ult){const its=ult.itens.map(prep),tot=its.filter(i=>i.st!="sem").length,ok=its.filter(i=>i.st=="ok"||i.st=="limite").length,lim=its.filter(i=>i.st=="limite").length,fo=its.filter(i=>i.st=="fora").length,sem=its.length-tot;
+  h+=`<div class="card"><div style="font-size:19px;font-weight:800">${ok} de ${tot} dentro da referência</div><div class="mu">Coleta de ${fdc(ult.data)} · ${lim} no limite · ${fo} fora${sem?` · ${sem} sem referência`:""}</div></div>`}
+ h+=`<div style="display:flex;gap:8px;margin-bottom:12px"><button class="pri" style="flex:1;font-size:15px" data-a="sd_imp">Importar PDF</button>${ult?`<button class="sec" style="flex:1" data-a="sd_ia">Perguntar a uma IA</button>`:""}</div><input type="file" id="sdf" accept="application/pdf,.pdf" hidden>`;
+ if(!ult){A.innerHTML=h+`<div class="card"><b>Comece pelo laudo do laboratório</b><p class="mu" style="margin:6px 0 0">Toque em Importar PDF e escolha o laudo. O app lê os valores aqui mesmo no iPhone, sem enviar para nenhuma IA, e mostra tudo para você conferir antes de guardar.</p></div>`;return}
+ h+=`<div style="display:flex;gap:6px;margin-bottom:12px"><button class="sec ${S.sdv=="ex"?"sel":""}" style="flex:1" data-a="sd_v" data-v="ex">Exames</button><button class="sec ${S.sdv=="co"?"sel":""}" style="flex:1" data-a="sd_v" data-v="co">Coletas (${cs.length})</button></div>`;
+ if(S.sdv=="co"){A.innerHTML=h+timeline(cs);return}
+ const todos=new Map();cs.forEach(c=>c.itens.forEach(i=>{if(!todos.has(i.k))todos.set(i.k,i)}));S.sdx=S.sdx||{};
+ GRUPOS.forEach(([g,t])=>{const cat=CAT.filter(c=>c[2]==g).map(c=>c[0]).filter(k=>todos.has(k)||RESERVA.includes(k)),ext=[...todos.values()].filter(i=>i.k.startsWith("x:")&&i.g==g&&!urina(i)).map(i=>i.k),uri=g=="rim"?[...todos.values()].filter(urina):[];
+  if(!cat.length&&!ext.length&&!uri.length)return;let ks=[...cat,...ext],mais="";
+  if(DESTAQUE[g]&&!S.sdx[g]){const r=ks.filter(k=>!DESTAQUE[g].includes(k));ks=DESTAQUE[g].filter(k=>todos.has(k));if(r.length)mais=`<button class="sdmais" data-a="sd_x" data-v="${g}">Ver hemograma completo (${r.length} itens)</button>`}
+  else if(DESTAQUE[g])mais=`<button class="sdmais" data-a="sd_x" data-v="${g}">Mostrar só os principais</button>`;
+  let rows=ks.map(k=>linha(k,ult)).join("");
+  if(uri.length){const u=cs.filter(c=>c.itens.some(urina)).pop(),ui=u.itens.filter(urina).map(prep),f=ui.filter(i=>i.st=="fora").length;
+   rows+=`<button class="sdrw" data-a="sd_uri"><i class="sddot" style="background:${COR[f?"fora":"ok"]}"></i><span class="sdn">Urina<small class="mu"> · ${fds(u.data)}</small></span><span class="sdsp"></span><span class="sdv" style="font-size:13px">${f?f+" alterado"+(f>1?"s":""):"normal"}</span><span class="sdar">›</span></button>`}
+  h+=`<div class="card sdgc"><div class="sdgt">${t}</div>${rows}${mais}</div>`});
+ A.innerHTML=h+`<div class="mu" style="margin:4px 2px 0">Verde: dentro da referência · Amarelo: dentro, mas perto do limite (últimos 10% da faixa) · Vermelho: fora. A referência é a que veio no laudo de cada coleta.</div>`}
+/* ---------- coletas: linha do tempo ---------- */
+const PESO={ok:0,limite:1,fora:2};
+function mudou(c,ant){if(!ant)return"";const m=[],p=[],nv=[];c.itens.forEach(i0=>{const i=prep(i0),j0=ant.itens.find(x=>x.k==i0.k);if(!j0||i.st=="sem")return;const j=prep(j0);if(j.st=="sem")return;
+  if(PESO[i.st]<PESO[j.st])m.push(i.nome);else if(PESO[i.st]>PESO[j.st])p.push(i.nome)});
+ const l=(t,a,cor)=>a.length?`<div style="margin-top:4px"><b style="color:${cor}">${t}:</b> ${a.map(esc).join(", ")}</div>`:"";
+ return(m.length||p.length)?l("Melhorou",m,"var(--okc)")+l("Piorou",p,"var(--bdc)"):`<div class="mu" style="margin-top:4px">Nenhum exame mudou de faixa em relação a ${fdc(ant.data)}.</div>`}
+function timeline(cs){return cs.slice().reverse().map((c,i,a)=>{const ant=cs[cs.indexOf(c)-1],its=c.itens.map(prep),fo=its.filter(x=>x.st=="fora"),li=its.filter(x=>x.st=="limite").length;
+ return`<div class="card"><div class="row"><b style="font-size:17px">${fdc(c.data)}</b><span class="mu">${esc(c.lab||"")}</span></div><div class="mu">OS ${esc(c.os||"–")} · ${its.length} exames · ${li} no limite · ${fo.length} fora${c.itens.some(x=>x.corr)?" · tem valor alterado por você":""}</div>
+ <div style="font-size:14px;margin-top:8px"><div class="mu" style="font-weight:700">O que mudou${ant?` desde ${fdc(ant.data)}`:""}</div>${ant?mudou(c,ant):`<div class="mu">Primeira coleta guardada.</div>`}${fo.length?`<div style="margin-top:4px"><b style="color:var(--bdc)">Fora da referência:</b> ${fo.map(x=>esc(x.nome)).join(", ")}</div>`:""}</div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><button class="sec" data-a="sd_col" data-v="${esc(c.id)}">Ver valores</button>${c.pdf?`<button class="sec" data-a="sd_pdf" data-v="${esc(c.id)}">Ver laudo original</button>`:""}<button class="sec" style="margin-left:auto" data-a="sd_apg" data-v="${esc(c.id)}" aria-label="Apagar coleta">Apagar</button></div></div>`}).join("")}
+/* ---------- detalhe de um exame ---------- */
+function grande(s){const p=s.filter(x=>x.it.num!=null);if(!p.length)return"";const W=320,H=180,L=38,R=12,T=10,B=30,r=p[p.length-1].it.ref||{};
+ const ys=p.map(x=>x.it.num);if(r.min!=null)ys.push(r.min);if(r.max!=null)ys.push(r.max);let lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.15||Math.abs(hi)*.1||1;lo=Math.max(lo-pad,Math.min(...ys)>=0?0:-1e9);hi+=pad;
+ const t=p.map(x=>pd(x.c.data).getTime()),t0=Math.min(...t),t1=Math.max(...t),X=v=>p.length==1?(L+W-R)/2:L+(v-t0)/((t1-t0)||1)*(W-L-R),Y=v=>T+(hi-v)/((hi-lo)||1)*(H-T-B);
+ let g="";if(r.min!=null||r.max!=null){const a=Y(r.max!=null?r.max:hi),b=Y(r.min!=null?r.min:lo);g+=`<rect x="${L}" y="${a}" width="${W-L-R}" height="${Math.max(1,b-a)}" fill="var(--okc)" opacity=".14"/>`;
+  [r.min,r.max].forEach(v=>{if(v!=null)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--okc)" stroke-dasharray="4 3" opacity=".7"/><text x="${W-R}" y="${Y(v)-3}" font-size="9" text-anchor="end" fill="var(--okc)">${v.toLocaleString("pt-BR")}</text>`})}
+ for(let k=0;k<=3;k++){const v=lo+(hi-lo)*k/3;g+=`<text x="${L-5}" y="${Y(v)+3}" text-anchor="end" font-size="9" fill="var(--mu)">${(Math.round(v*100)/100).toLocaleString("pt-BR")}</text>`}
+ let ln="";if(p.length>1)ln=`<polyline points="${p.map((x,i)=>X(t[i])+","+Y(x.it.num)).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round"/>`;
+ const lb=p.map((x,i)=>(p.length<=6||i==0||i==p.length-1)?`<text x="${X(t[i])}" y="${H-10}" font-size="9" text-anchor="${p.length>1&&i==0?"start":p.length>1&&i==p.length-1?"end":"middle"}" fill="var(--mu)">${fds(x.c.data)}</text>`:"").join("");
+ const dt=p.map((x,i)=>`<circle cx="${X(t[i])}" cy="${Y(x.it.num)}" r="5" fill="${COR[x.it.st]}" stroke="var(--sf)" stroke-width="2"/>`).join("");
+ return`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Evolução">${g}${ln}${dt}${lb}</svg><div class="mu" style="font-size:12px">Faixa verde: referência do laudo mais recente.</div>`}
+function detalhe(k){const s=serie(k);if(!s.length)return;const l=s[s.length-1].it,ex=EXPL[k]||(urina(l)?"Item do exame de urina.":"Exame extra que veio no laudo. Ainda não tenho uma explicação pronta para ele.");
+ modal(`<div class="mu" style="font-size:12px;font-weight:700;letter-spacing:.06em">${GN(l.g).toUpperCase()}</div><h1 style="font-size:26px;margin-top:2px">${esc(l.nome)}</h1>
+ <div class="card"><div class="row" style="align-items:flex-end"><div><div style="font-size:34px;font-weight:800;line-height:1.1">${esc(l.valorEf)} <span style="font-size:16px;font-weight:600">${esc(l.un||"")}</span></div><div class="mu">${fdc(s[s.length-1].c.data)}</div></div><span class="sdpill" style="background:${COR[l.st]}">${STX[l.st]}</span></div>${l.corr?`<div class="sdbx2">Alterado por você · o laudo diz ${esc(l.valor)}</div>`:""}
+ ${grande(s)}<div class="mu" style="margin-top:8px">Referência no laudo: ${esc(l.refTxt||"não informada")}</div></div>
+ <div class="card" style="font-size:15px;line-height:1.5"><b>O que é</b><div>${esc(ex)}</div></div>
+ <h2>Todos os resultados</h2><div class="card">${s.slice().reverse().map(x=>`<div class="ls" style="align-items:center"><span><b>${fdc(x.c.data)}</b> · ${esc(x.it.valorEf)} ${esc(x.it.un||"")}${x.it.corr?` <span class="sdbx">alterado · laudo: ${esc(x.it.valor)}</span>`:""}<div class="mu">${STX[x.it.st]}${x.it.refTxt?" · ref. "+esc(x.it.refTxt):""}</div></span><span style="display:flex;gap:6px;align-items:center"><i class="sddot" style="background:${COR[x.it.st]}"></i><button class="sec" style="padding:6px 9px;font-size:12px" data-a="sd_cor" data-v="${esc(x.c.id)}" data-k="${esc(k)}">Corrigir</button></span></div>`).join("")}</div>`)}
+/* ---------- lista de valores (coleta ou conferência) ---------- */
+function listaItens(itens,idc){const by={};itens.forEach(i0=>{const i=prep(i0);(by[i.g]=by[i.g]||[]).push(i)});
+ return GRUPOS.filter(g=>by[g[0]]).map(([g,t])=>`<h2>${t}</h2><div class="card">${by[g].map(i=>`<div class="ls" style="align-items:center"><span style="min-width:0"><b>${esc(i.nome)}</b> ${esc(i.valorEf)} ${esc(i.un||"")}${i.corr?` <span class="sdbx">alterado · laudo: ${esc(i.valor)}</span>`:""}<div class="mu">${i.refTxt?"ref. "+esc(i.refTxt):"sem referência no laudo"}</div></span><span style="display:flex;gap:6px;align-items:center;flex:none"><i class="sddot" style="background:${COR[i.st]}" title="${STX[i.st]}"></i><button class="sec" style="padding:6px 9px;font-size:12px" data-a="sd_cor" data-v="${esc(idc)}" data-k="${esc(i.k)}">Corrigir</button></span></div>`).join("")}</div>`).join("")}
+function verColeta(id){const c=EX.c.find(x=>x.id==id);if(!c)return;modal(`<h1 style="font-size:24px">Coleta de ${fdc(c.data)}</h1><div class="mu" style="margin:-8px 0 8px">${esc(c.lab||"")} · OS ${esc(c.os||"–")} · ${c.itens.length} exames</div>${c.pdf?`<button class="sec" style="width:100%" data-a="sd_pdf" data-v="${esc(c.id)}">Ver laudo original</button>`:""}${listaItens(c.itens,c.id)}`)}
+function verUrina(){const c=coletas().filter(c=>c.itens.some(urina)).pop();if(!c)return;modal(`<div class="mu" style="font-size:12px;font-weight:700;letter-spacing:.06em">RIM</div><h1 style="font-size:24px;margin-top:2px">Urina · ${fdc(c.data)}</h1><div class="card">${c.itens.filter(urina).map(prep).map(i=>`<button class="sdrw" data-a="sd_det" data-v="${esc(i.k)}"><i class="sddot" style="background:${COR[i.st]}"></i><span class="sdn">${esc(i.nome.replace(/ \(urina\)$/,""))}</span><span class="sdv">${esc(i.valorEf)}<small> ${esc(i.un||"")}</small></span><span class="sdar">›</span></button>`).join("")}</div>`)}
+/* ---------- importação ---------- */
+let PDFJS=null;async function pdfjs(){if(!PDFJS){PDFJS=await import("./pdf.min.mjs");PDFJS.GlobalWorkerOptions.workerSrc="./pdf.worker.min.mjs"}return PDFJS}
+async function pdfLinhas(buf){const lib=await pdfjs(),doc=await lib.getDocument({data:new Uint8Array(buf.slice(0)),isEvalSupported:false}).promise,pages=[];
+ for(let p=1;p<=doc.numPages;p++){const tc=await(await doc.getPage(p)).getTextContent(),rows=[];
+  for(const it of tc.items){if(!it.str.trim())continue;const y=it.transform[5],x=it.transform[4];let r=rows.find(r=>Math.abs(r.y-y)<2.5);if(!r){r={y,its:[]};rows.push(r)}r.its.push({x,s:it.str,w:it.width})}
+  rows.sort((a,b)=>b.y-a.y);pages.push(rows.map(r=>{r.its.sort((a,b)=>a.x-b.x);let o="",e=null;for(const i of r.its){if(e!==null&&i.x-e>12)o+=" | ";else if(e!==null&&i.x-e>.8)o+=" ";o+=i.s;e=i.x+i.w}return o.replace(/\s+/g," ").trim()}))}
+ return pages}
+const guardar=i=>({k:i.k,nome:i.nome,g:i.g,titulo:i.titulo,valor:i.valor,un:i.un,refTxt:i.refTxt,ref:i.ref,...(i.coleta?{col:isoBR(i.coleta)}:{})});
+async function importar(f){if(!f)return;modal(`<div class="card" style="text-align:center;margin-top:30vh"><b>Lendo o laudo…</b><div class="mu">Tudo acontece aqui no iPhone.</div></div>`);
+ let r,buf;try{buf=await f.arrayBuffer();r=lerLaudo(await pdfLinhas(buf))}catch(e){modal(`<h1 style="font-size:24px">Não consegui abrir o PDF</h1><div class="card">${esc(navigator.onLine||PDFJS?"O arquivo pode estar protegido ou corrompido.":"O leitor de PDF ainda não foi baixado. Abra o app uma vez com internet e tente de novo.")}</div>`);return}
+ if(!r.itens.length||!r.data){modal(`<h1 style="font-size:24px">Não reconheci este laudo</h1><div class="card" style="line-height:1.5">Não encontrei resultados de exames no formato que o app conhece (Humanizalab).<br><br>Se você mudou de laboratório, mande este PDF para o Claude e peça para ensinar o app a ler o novo formato. Nada foi guardado.</div>`);return}
+ const id="os:"+(r.os||isoBR(r.data)),c={id,os:r.os,data:isoBR(r.data),lab:r.lab,idade:r.idade,itens:r.itens.map(guardar)},ant=EX.c.find(x=>x.id==id);
+ if(ant&&ant.itens.length==c.itens.length&&ant.itens.every(a=>{const b=c.itens.find(x=>x.k==a.k);return b&&b.valor==a.valor})){modal(`<h1 style="font-size:24px">Este laudo já foi importado</h1><div class="card">A coleta de ${fdc(ant.data)} (OS ${esc(ant.os)}) já está guardada com os mesmos ${ant.itens.length} exames. Nada foi alterado.</div>`);return}
+ if(ant)c.itens.forEach(i=>{const a=ant.itens.find(x=>x.k==i.k);if(a&&a.corr&&a.valor==i.valor)i.corr=a.corr});
+ S.sdN={c,buf,nome:f.name||"laudo.pdf",ant:ant?ant.itens.length:0};conferir()}
+function conferir(){const n=S.sdN;if(!n)return;const c=n.c,its=c.itens.map(prep),fo=its.filter(i=>i.st=="fora").length,li=its.filter(i=>i.st=="limite").length;
+ modal(`<h1 style="font-size:24px">Confira o que foi lido</h1><div class="card"><div class="row"><b>${fdc(c.data)}</b><span class="mu">${esc(c.lab)}</span></div><div class="mu">OS ${esc(c.os||"–")} · idade no laudo: ${c.idade} anos</div><div style="margin-top:6px">${its.length} exames lidos · ${li} no limite · ${fo} fora</div></div>
+ ${n.ant?`<div class="card" style="border-color:var(--wnc)"><b>Esta OS já está guardada</b><div class="mu">Ao confirmar, a coleta de ${fdc(c.data)} será substituída (${n.ant} → ${its.length} exames). Use isso quando sair o laudo final de um parcial.</div></div>`:""}
+ <div class="mu" style="margin:0 2px 4px">Compare com o papel. Depois de guardar, os valores ficam travados. Se algum estiver errado, use Corrigir: ele fica marcado como alterado por você e o valor do laudo continua guardado.</div>
+ <div style="display:flex;gap:8px;margin:10px 0"><button class="pri" style="flex:2" data-a="sd_ok">Confirmar e guardar</button><button class="sec" style="flex:1" data-a="sd_can">Cancelar</button></div>
+ ${listaItens(c.itens,"__novo")}<button class="pri" style="margin-top:6px" data-a="sd_ok">Confirmar e guardar</button>`)}
+async function confirmar(){const n=S.sdN;if(!n)return;const c=n.c,antes=JSON.stringify(EX),tinhaPdf=n.ant?await idbGet(c.id).catch(()=>null):null;S.sdN=null;c.u=Date.now();c.pdf={n:n.nome,sz:n.buf.byteLength,up:0};
+ EX.c=EX.c.filter(x=>x.id!=c.id);EX.c.push(c);EX.del=EX.del.filter(d=>d.id!=c.id);try{await idbPut(c.id,n.buf)}catch(e){}save();modal(null);S.sdv="ex";render();showUndo("Coleta de "+fdc(c.data)+" guardada",()=>{EX=JSON.parse(antes);if(tinhaPdf)idbPut(c.id,tinhaPdf).catch(()=>{});else idbDel(c.id).catch(()=>{})});up()}
+/* ---------- correção manual ---------- */
+function achar(idc,k){if(idc=="__novo")return S.sdN&&S.sdN.c.itens.find(i=>i.k==k);const c=EX.c.find(x=>x.id==idc);return c&&c.itens.find(i=>i.k==k)}
+function corrigir(idc,k){const it=achar(idc,k);if(!it)return;S.sdC={idc,k,de:S.sdN&&idc=="__novo"?"conf":S.sdDet?"det":"col"};
+ modal(`<h1 style="font-size:24px">Corrigir ${esc(it.nome)}</h1><div class="card"><div class="mu">Valor que o app leu do laudo</div><div style="font-size:24px;font-weight:800;margin-bottom:10px">${esc(it.valor)} ${esc(it.un||"")}</div>
+ <div class="mu" style="margin-bottom:4px">Valor correto</div><input class="q" id="sdcv" ${NUM(it.valor)>=0||/^[<>]/.test(it.valor)?'inputmode="decimal"':""} value="${esc(it.corr?it.corr.v:it.valor)}">
+ <div class="mu" style="margin-bottom:10px">Se você salvar um valor diferente, ele aparece marcado como "alterado por você" em todo lugar, inclusive no texto para a IA. Se deixar igual ao laudo, nada muda.</div>
+ <button class="pri" data-a="sd_csv">Salvar</button>${it.corr?`<button class="sec" style="width:100%;margin-top:10px" data-a="sd_crv">Voltar ao valor do laudo (${esc(it.valor)})</button>`:""}<button class="sec" style="width:100%;margin-top:10px" data-a="sd_cvl">Cancelar</button></div>`);setTimeout(()=>{const e=$("sdcv");if(e)e.focus()},50)}
+function voltarCor(){const c=S.sdC;S.sdC=null;if(!c)return modal(null);if(c.de=="conf")return conferir();if(c.de=="det"&&S.sdDet)return detalhe(S.sdDet);if(c.idc!="__novo")return verColeta(c.idc);modal(null)}
+function salvarCor(volta){const c=S.sdC;if(!c)return;const it=achar(c.idc,c.k);if(!it)return;const v=volta?it.valor:String(($("sdcv")||{}).value||"").trim();
+ const igual=s=>s.replace(/\s+/g,"").toLowerCase()==String(it.valor).replace(/\s+/g,"").toLowerCase();
+ if(!v||igual(v)){if(it.corr){delete it.corr;fim()}}else{const nv=NUM(v.replace(/^[<>]=?\s*/,"")),ov=NUM(String(it.valor).replace(/^([<>]=?|inferior a|superior a)\s*/i,""));
+  if(!isNaN(ov)&&isNaN(nv)){const e=$("sdcv");if(e){e.style.borderColor="var(--bdc)"}return}
+  if(!it.corr||it.corr.v!=v){it.corr={v,em:Date.now()};fim()}}
+ voltarCor();if(S.tab=="saude")render();
+ function fim(){if(c.idc!="__novo"){const co=EX.c.find(x=>x.id==c.idc);if(co)co.u=Date.now();save()}}}
+/* ---------- apagar coleta ---------- */
+function apagar(id){const c=EX.c.find(x=>x.id==id);if(!c)return;if(S.sdApg!==id){S.sdApg=id;modal(`<h1 style="font-size:24px">Apagar a coleta de ${fdc(c.data)}?</h1><div class="card">Os ${c.itens.length} valores e o PDF original desta coleta serão apagados do iPhone e da nuvem.<br><br><button class="pri" style="background:var(--bdc)" data-a="sd_apg" data-v="${esc(id)}">Apagar coleta</button><button class="sec" style="width:100%;margin-top:10px" data-a="close">Cancelar</button></div>`);return}
+ S.sdApg=null;EX.c=EX.c.filter(x=>x.id!=id);const t=Date.now();EX.del=EX.del.filter(d=>d.id!=id).concat([{id,t}]);if(c.pdf&&c.pdf.up)EX.pdel.push({id,p:c.pdf.parts||1});idbDel(id).catch(()=>{});save();modal(null);render();up()}
+/* ---------- PDF: IndexedDB no iPhone ---------- */
+let DBP=null;const idb=()=>DBP||(DBP=new Promise((ok,er)=>{const r=indexedDB.open("gymtrack-saude",1);r.onupgradeneeded=()=>r.result.createObjectStore("pdf");r.onsuccess=()=>ok(r.result);r.onerror=()=>er(r.error)}));
+const idbOp=(m,f)=>idb().then(db=>new Promise((ok,er)=>{const tx=db.transaction("pdf",m),q=f(tx.objectStore("pdf"));tx.oncomplete=()=>ok(q&&q.result);tx.onerror=()=>er(tx.error)}));
+const idbPut=(k,v)=>idbOp("readwrite",s=>s.put(v,k)),idbGet=k=>idbOp("readonly",s=>s.get(k)),idbDel=k=>idbOp("readwrite",s=>s.delete(k));
+/* ---------- PDF: nuvem (usuarios/{uid}/laudos/{id}-{parte}) ---------- */
+const PARTE=700000,did=id=>id.replace(/[^0-9a-zA-Z-]/g,"_");
+const b64=buf=>{const u=new Uint8Array(buf);let s="";for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
+const unb64=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
+let UPB=0;async function up(){if(UPB||DEMO||!GT.u||!window.GTFB||!navigator.onLine)return;UPB=1;const F=GTFB,uid=GT.u.uid;let mud=0;
+ try{for(const d of EX.pdel.slice()){const b=F.writeBatch(F.db);for(let i=0;i<(d.p||1);i++)b.delete(F.doc(F.db,"usuarios",uid,"laudos",did(d.id)+"-"+i));await gtTmo(b.commit(),20000);EX.pdel=EX.pdel.filter(x=>x!==d);mud=1}
+  for(const c of EX.c){if(!c.pdf||c.pdf.up)continue;const buf=await idbGet(c.id);if(!buf)continue;const s=b64(buf),n=Math.ceil(s.length/PARTE),b=F.writeBatch(F.db);
+   for(let i=0;i<n;i++)b.set(F.doc(F.db,"usuarios",uid,"laudos",did(c.id)+"-"+i),{id:c.id,i,n,nome:c.pdf.n,d:s.slice(i*PARTE,(i+1)*PARTE),t:Date.now()});
+   await gtTmo(b.commit(),30000);c.pdf.up=1;c.pdf.parts=n;mud=1}}catch(e){}
+ UPB=0;if(mud)save()}
+async function pegarPdf(c){let buf=await idbGet(c.id).catch(()=>null);if(buf)return buf;if(!c.pdf||!c.pdf.up||!GT.u||!window.GTFB)return null;
+ const F=GTFB,uid=GT.u.uid;let s="";for(let i=0;i<(c.pdf.parts||1);i++){const d=await gtTmo(F.getDocFromServer(F.doc(F.db,"usuarios",uid,"laudos",did(c.id)+"-"+i)),25000);if(!d.exists())return null;s+=d.data().d}
+ buf=unb64(s);idbPut(c.id,buf).catch(()=>{});return buf}
+async function verPdf(id){const c=EX.c.find(x=>x.id==id);if(!c)return;modal(`<h1 style="font-size:24px">Laudo de ${fdc(c.data)}</h1><div class="card mu">Carregando o PDF…</div>`);
+ let buf=null;try{buf=await pegarPdf(c)}catch(e){}
+ if(!buf){modal(`<h1 style="font-size:24px">Laudo de ${fdc(c.data)}</h1><div class="card">${navigator.onLine?"Não encontrei o PDF desta coleta no iPhone nem na nuvem.":"O PDF desta coleta ainda não está neste iPhone. Conecte à internet para baixar da nuvem."}</div>`);return}
+ S.sdPdf={buf,nome:c.pdf.n||"laudo.pdf"};
+ modal(`<h1 style="font-size:24px">Laudo de ${fdc(c.data)}</h1><div class="mu" style="margin:-8px 0 10px">${esc(c.lab||"")} · OS ${esc(c.os||"")}</div><button class="sec" style="width:100%;margin-bottom:10px" data-a="sd_shp">Compartilhar ou salvar o PDF</button><div id="sdpg"></div>`);
+ try{const lib=await pdfjs(),doc=await lib.getDocument({data:new Uint8Array(buf.slice(0)),isEvalSupported:false}).promise,box=$("sdpg");if(!box)return;const w=Math.min(box.clientWidth||340,480);
+  for(let p=1;p<=doc.numPages;p++){const pg=await doc.getPage(p),v0=pg.getViewport({scale:1}),sc=w/v0.width*2,v=pg.getViewport({scale:sc}),cv=document.createElement("canvas");cv.width=v.width;cv.height=v.height;cv.className="sdpgc";if(!$("sdpg"))return;$("sdpg").appendChild(cv);await pg.render({canvasContext:cv.getContext("2d"),viewport:v}).promise}}catch(e){const b=$("sdpg");if(b)b.innerHTML=`<div class="card mu">Não consegui mostrar as páginas aqui. Use o botão acima para abrir em outro app.</div>`}}
+async function shPdf(){const p=S.sdPdf;if(!p)return;const f=new File([p.buf],p.nome,{type:"application/pdf"});try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:p.nome});return}}catch(e){if(e&&e.name=="AbortError")return}
+ const u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=p.nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000)}
+/* ---------- perguntar a uma IA ---------- */
+const CTX0="Faço TRT (reposição de testosterona) e treino pesado de musculação 5 vezes por semana.";
+const ctxG=()=>{try{const v=localStorage.getItem("gt-sd-ctx");return v==null?CTX0:v}catch(e){return CTX0}};
+function textoIA(){const cs=coletas(),sel=S.sdQ=="all"?cs:cs.slice(-2),ult=cs[cs.length-1];let t=`Resultados dos meus exames de sangue, copiados dos laudos do laboratório. Homem, ${ult.idade||""} anos.\n`;
+ if(S.sdCtx!==false&&ctxG().trim())t+=`Contexto: ${ctxG().trim()}\n`;
+ sel.forEach(c=>{t+=`\nColeta de ${fdc(c.data)} (${c.lab||"laboratório"}):\n`;const by={};c.itens.map(prep).forEach(i=>(by[i.g]=by[i.g]||[]).push(i));
+  GRUPOS.forEach(([g,n])=>{if(!by[g])return;t+=`${n}:\n`;by[g].forEach(i=>{t+=`- ${i.nome}: ${i.valorEf}${i.un?" "+i.un:""}${i.refTxt?` (referência: ${i.refTxt})`:" (sem referência no laudo)"}${i.st=="fora"?" [FORA]":i.st=="limite"?" [no limite]":""}${i.corr?` [valor corrigido à mão; o laudo diz ${i.valor}]`:""}\n`})})});
+ return t+`\nPor favor, me explique em português simples o que esses resultados mostram, o que mudou entre as coletas, o que está fora ou perto do limite e quais perguntas eu deveria levar ao meu médico. Sei que isso não substitui a consulta.`}
+function iaForm(){S.sdQ=S.sdQ||"2";if(S.sdCtx===undefined)S.sdCtx=true;const n=coletas().length;
+ modal(`<h1 style="font-size:24px">Perguntar a uma IA</h1><div class="card" style="line-height:1.5">O app monta um texto com seus resultados e abre a janela de compartilhar do iPhone. Escolha lá o app do Claude, do ChatGPT ou do Gemini. Nada é enviado sem você escolher.</div>
+ <div class="card"><div class="mu" style="margin-bottom:6px">Quais coletas</div><div style="display:flex;gap:6px;margin-bottom:12px"><button class="sec ${S.sdQ=="2"?"sel":""}" style="flex:1" data-a="sd_q" data-v="2">${n>1?"As 2 últimas":"A última"}</button><button class="sec ${S.sdQ=="all"?"sel":""}" style="flex:1" data-a="sd_q" data-v="all">Todas (${n})</button></div>
+ <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:6px"><input type="checkbox" id="sdctx" ${S.sdCtx?"checked":""} style="width:22px;height:22px;margin:2px 0 0"><span><b>Incluir meu contexto</b><div class="mu">Ajuda a IA a entender valores que mudam com hormônio e treino.</div></span></label>
+ <textarea id="sdctxt" rows="3" style="width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--ln);background:var(--bg);color:var(--ink);font:inherit;font-size:16px;margin-bottom:10px">${esc(ctxG())}</textarea>
+ <button class="pri" data-a="sd_sh">Compartilhar com uma IA</button><button class="sec" style="width:100%;margin-top:10px" data-a="sd_cp">Copiar o texto</button><div class="mu" id="sdiam" style="margin-top:8px"></div></div>
+ <details class="card"><summary><b>Ver o texto que vai ser enviado</b></summary><pre id="sdiat" style="white-space:pre-wrap;font-size:12px;margin:8px 0 0;font-family:inherit"></pre></details>`);const p=$("sdiat");if(p)p.textContent=textoIA()}
+function lerCtx(){const t=$("sdctxt"),c=$("sdctx");if(t)try{localStorage.setItem("gt-sd-ctx",t.value)}catch(e){}if(c)S.sdCtx=c.checked}
+async function compartilhar(){lerCtx();const t=textoIA(),m=$("sdiam");try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name=="AbortError")return}
+ try{await navigator.clipboard.writeText(t);if(m)m.textContent="Texto copiado. Abra o app da IA e cole."}catch(e){if(m)m.textContent="Não consegui copiar. Use o texto abaixo."}}
+async function copiar(){lerCtx();const m=$("sdiam");try{await navigator.clipboard.writeText(textoIA());if(m)m.textContent="Texto copiado. Abra o app da IA e cole."}catch(e){if(m)m.textContent="Não consegui copiar. Use o texto abaixo."}}
+/* ---------- tema ---------- */
+const temaG=()=>{try{return localStorage.getItem("gt-tema")||"b"}catch(e){return"b"}};
+function temaAplica(){const b=temaG()=="b";if(b)document.documentElement.dataset.theme="gold";else delete document.documentElement.dataset.theme;const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=b?"#0E0F12":"#2F3BFF"}
+const temaCard=()=>{const t=temaG();return`<h2>Tema</h2><div class="card"><div style="display:flex;gap:6px"><button class="sec ${t=="b"?"sel":""}" style="flex:1;padding:10px 4px" data-a="sd_tema" data-v="b"><b style="display:block">Escuro dourado</b><span style="font-size:11px;font-weight:600;opacity:.8">sempre escuro</span></button><button class="sec ${t=="a"?"sel":""}" style="flex:1;padding:10px 4px" data-a="sd_tema" data-v="a"><b style="display:block">Clássico</b><span style="font-size:11px;font-weight:600;opacity:.8">claro ou escuro, igual ao iPhone</span></button></div></div>`};
+/* ---------- junção com a nuvem ---------- */
+function merge(a,b){a=a||{c:[],del:[],pdel:[]};b=b||{c:[],del:[],pdel:[]};const del=new Map();[...(a.del||[]),...(b.del||[])].forEach(d=>{if(!del.has(d.id)||del.get(d.id).t<d.t)del.set(d.id,d)});
+ const m=new Map();[...(a.c||[]),...(b.c||[])].forEach(c=>{const o=m.get(c.id);if(!o||(c.u||0)>(o.u||0)||((c.u||0)==(o.u||0)&&c.pdf&&c.pdf.up&&!(o.pdf&&o.pdf.up)))m.set(c.id,c)});
+ const c=[...m.values()].filter(x=>!del.has(x.id)||(x.u||0)>del.get(x.id).t),pd=new Map();[...(a.pdel||[]),...(b.pdel||[])].forEach(x=>pd.set(x.id,x));
+ return{c,del:[...del.values()],pdel:[...pd.values()]}}
+/* ---------- cliques ---------- */
+function act(a,v,b){
+ if(a=="sd_imp"){const f=$("sdf");if(f){f.value="";f.click()}}
+ else if(a=="sd_v"){S.sdv=v;render()}else if(a=="sd_x"){S.sdx=S.sdx||{};S.sdx[v]=!S.sdx[v];render()}
+ else if(a=="sd_det"){S.sdDet=v;detalhe(v)}else if(a=="sd_uri"){S.sdDet=null;verUrina()}
+ else if(a=="sd_col"){S.sdDet=null;verColeta(v)}else if(a=="sd_pdf")verPdf(v);else if(a=="sd_shp")shPdf();
+ else if(a=="sd_apg")apagar(v);else if(a=="sd_ok")confirmar();else if(a=="sd_can"){S.sdN=null;modal(null)}
+ else if(a=="sd_cor")corrigir(v,b.dataset.k);else if(a=="sd_csv")salvarCor(0);else if(a=="sd_crv")salvarCor(1);else if(a=="sd_cvl")voltarCor();
+ else if(a=="sd_ia")iaForm();else if(a=="sd_q"){lerCtx();S.sdQ=v;iaForm()}else if(a=="sd_sh")compartilhar();else if(a=="sd_cp")copiar();
+ else if(a=="sd_tema"){try{localStorage.setItem("gt-tema",v)}catch(e){}temaAplica();render()}}
+document.addEventListener("change",ev=>{const t=ev.target;if(t&&t.id=="sdf"&&t.files&&t.files[0])importar(t.files[0]);if(t&&t.id=="sdctx"){S.sdCtx=t.checked;const p=$("sdiat");if(p)p.textContent=textoIA()}});
+document.addEventListener("input",ev=>{const t=ev.target;if(t&&t.id=="sdctxt"){try{localStorage.setItem("gt-sd-ctx",t.value)}catch(e){}const p=$("sdiat");if(p)p.textContent=textoIA()}});
+temaAplica();
+let ANOS=[];
+return{tab,act,merge,persist,get:()=>EX,set:x=>{if(x&&Array.isArray(x.c)){EX=Object.assign({c:[],del:[],pdel:[]},x);persist()}},up,temaCard,anos:a=>{if(a)ANOS=a;return ANOS},_ler:lerLaudo,_linhas:pdfLinhas};
+
+})();
 function render(){$("db").innerHTML=DEMO?`<div class="demo"><span>Modo demonstração · dados fictícios</span><button class="sec" data-a="dm_off">Sair</button></div>`:"";$("nav").innerHTML=nav.map(([k,l])=>`<button class="${S.tab==k?"on":""}" data-a="tab" data-v="${k}">${l}</button>`).join("");
 const A=$("app");
 if(S.tab=="treino"){const n=pn(),T=PL.total;A.innerHTML=`<div class="hd2"><h1>Gymtrack</h1>${lockCfg()?'<button class="sec" data-a="lk_now" aria-label="Bloquear agora" style="padding:9px 11px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></button>':""}</div><div class="card"><div class="row"><b>Plano atual</b><button class="sec" data-a="plf">Editar plano</button></div><div class="tick" style="grid-template-columns:repeat(${T},1fr)">${Array.from({length:T},(_,i)=>`<i class="${i<n?"on":i==n?"nw":""}"></i>`).join("")}</div><div class="mu">${Math.min(n,T)} de ${T} sessões${PL.end?" · vence "+pd(PL.end).toLocaleDateString("pt-BR"):""}</div></div>
@@ -319,7 +669,7 @@ ${S.live?`<button class="pri" data-a="resume">Continuar treino em andamento</but
 ${(()=>{const r=rotNext();if(!r||S.live)return"";const i=R.indexOf(r),l=rotLast();return`<div class="card" style="border:2px solid #22C55E;margin-top:10px"><div class="row"><span><div class="mu" style="font-size:13px">Hoje é dia do</div><b style="font-size:24px;color:#22C55E">${esc(r.n)}</b>${l?`<div class="mu" style="font-size:12px">último feito: ${esc(l.r.n)} · ${fd(l.h.d)}</div>`:""}</span><button class="pri" style="width:auto;padding:12px 18px;background:#22C55E;border-color:#22C55E;color:#fff" data-a="go" data-v="${i}">Iniciar</button></div></div>`})()}<h2>Temporizador</h2><div class="card"><div style="display:flex;gap:6px;flex-wrap:wrap">${[30,60,90,120].map(s=>`<button class="sec" data-a="tm" data-v="${s}">${s}s</button>`).join("")}<button class="sec" data-a="sw">Cronômetro</button></div></div><div class="hd2"><h2>Minhas rotinas</h2><span><button class="sec" data-a="rb_new">+ Nova</button> <button class="sec" data-a="rb_json">Importar JSON</button></span></div>${R.map((r,i)=>{const t=rts(r),dup=R.filter(x=>x.n==r.n),nw=dup.length>1&&t&&t==Math.max(...dup.map(rts)),nx=rotNext(),isN=nx&&nx===r,lk=nx&&!isN&&r.rot!==false,lr=rotLast(),dn=lr&&lr.r===r?lr.h.d:null;return`<div class="card" style="${isN?"border:2px solid #22C55E":lk?"opacity:.6":""}"><div class="row"><span><b>${esc(r.n)}</b>${isN?' <span class="pr" style="background:#22C55E;color:#fff">● PRÓXIMO</span>':""}${lk&&dn?` <span class="mu" style="font-size:12px">🔒 feito em ${fd(dn)}</span>`:""}${r.rot===false?' <span class="mu" style="font-size:12px">· fora do rodízio</span>':""}${nw?' <span class="pr">MAIS RECENTE</span>':""}<div class="mu" style="font-size:12px">${t?"Criada em "+fdt(t)+" · ":""}${r.ex.length} exercícios</div></span><span><button class="sec" data-a="rb_view" data-v="${i}">Ver</button> <button class="sec" data-a="rb_ced" data-v="${i}">Editar</button> ${lk?`<button class="sec" data-a="rot_lk" data-lkg="${i}" data-h="Hoje é dia do ${esc(nx.n)}. Segure 2 segundos para fazer este mesmo assim.">🔒 Iniciar</button>`:`<button class="sec" data-a="go" data-v="${i}" ${isN?'style="background:#22C55E;color:#fff;border-color:#22C55E"':""}>Iniciar</button>`}</span></div>${r.abc&&partsOf(r.ex).length?`<div style="margin-top:6px"><span class="pr">Partes ${partsOf(r.ex).join(", ")} · próxima: ${nextPart(r)}</span></div>`:""}<div class="mu" style="margin-top:6px">${r.ex.map(e=>esc(X(e[0]).n)).join(", ")}</div></div>`}).join("")}${ROUT.some(r=>!R.some(x=>x.id==r.id))?`<button class="sec" style="width:100%" data-a="rdef">Restaurar rotinas padrão</button>`:""}`}
 if(S.tab=="hist"){A.innerHTML=`<h1>Histórico</h1>`+(H.length?[...H].reverse().map(h=>{const i=H.indexOf(h);return`<button class="card ls" style="display:block;width:100%;text-align:left;${(h.skip||[]).length||h.ex.some(e=>e.plan)?"border-left:5px solid #F5B400":""}" data-a="wk" data-v="${i}"><div class="row"><b>${esc(h.name)}</b><span class="mu">${fd(h.d)}</span></div><div class="mu">${h.ex.reduce((a,e)=>a+e.sets.length,0)} séries · ${Math.round(vol(h.ex)).toLocaleString("pt-BR")} kg · ${Math.round(h.dur/60)} min</div>${(()=>{const n=(h.skip||[]).length,pt=h.ex.filter(e=>e.plan).length;return n||pt?`<div style="color:#F5B400;font-size:13px;font-weight:700;margin-top:2px">⚠ ${[n?n+" não feito"+(n>1?"s":""):"",pt?pt+" incompleto"+(pt>1?"s":""):""].filter(Boolean).join(" · ")}</div>`:""})()}</button>`}).join(""):`<p class="mu">Nenhum treino ainda. Comece pela aba Treino.</p>`)}
 if(S.tab=="ex"){A.innerHTML=`<div class="hd2"><h1>Exercícios</h1><button class="sec" data-a="nx">+ Novo</button></div><input class="q" id="q" placeholder="Buscar exercício ou músculo" value="${esc(S.q)}"><div class="card" id="exl"></div>${HID.size?`<button class="sec" style="width:100%" data-a="unh">Restaurar ${HID.size} oculto(s)</button>`:""}`;exList()}
-if(S.tab=="perfil")perfil(A);if(S.tab=="inj")injTab(A);A.innerHTML+=`<div class="mu" style="text-align:center;margin:28px 0 8px">Versão ${VERSAO}</div>`}
+if(S.tab=="perfil")perfil(A);if(S.tab=="inj")injTab(A);if(S.tab=="saude")SD.tab(A);A.innerHTML+=`<div class="mu" style="text-align:center;margin:28px 0 8px">Versão ${VERSAO}</div>`}
 const SITES=["Coxa direita","Coxa esquerda","Glúteo direito","Glúteo esquerdo","Deltoide direito","Deltoide esquerdo","Abdômen direito","Abdômen esquerdo"];
 function curSub(){const subs=[...new Set(P.map(p=>p.sub))];return S.sub&&subs.includes(S.sub)?S.sub:(P.length?P[P.length-1].sub:"")}
 const PAL=["#4DA3FF","#2ECC9A","#FF9F2E","#FF5FA2","#8B7CFF","#E5484D"],fmtN=n=>(Math.round(n*10)/10).toLocaleString("pt-BR"),dn=d=>Math.round(pd(d)/864e5),dayD=(a,b)=>dn(b)-dn(a),addD=(d,n)=>{const x=pd(d);x.setDate(x.getDate()+n);return iso(x)};
@@ -499,7 +849,7 @@ const c=t.slice(a,b+1).replace(/[\u200B-\u200D\u2060\u00A0]/g," ").replace(/[\u2
 return JSON.parse(c)}
 const bkErr=t=>{t=String(t||"").trim();return !t?"A caixa está vazia. Cole o backup ou escolha o arquivo.":!/\}\s*$/.test(t)?"O texto parece cortado (falta o final). Copie o backup inteiro de novo.":"Texto inválido. Cole o backup completo, sem alterar nada."}
 const isBk=d=>d&&!Array.isArray(d)&&Array.isArray(d.H)&&Array.isArray(d.R);
-function applyBackup(d){if(!Array.isArray(d.H)||!Array.isArray(d.R)||!Array.isArray(d.B))throw 0;(d.C||[]).forEach(c=>{if(!LIB.some(e=>e.id==c.id))LIB.push(c)});H=d.H;R=d.R;B=d.B;if(Array.isArray(d.P))P=d.P;if(+d.G)G=+d.G;if(d.PL&&d.PL.total)PL=d.PL;if(d.V&&typeof d.V=="object")VL=d.V;if(d.PS&&typeof d.PS=="object")PS=d.PS;if(Array.isArray(d.D))HID=new Set(d.D);if(d.U&&typeof d.U=="object"){UX=d.U;svU()}if(d.X&&typeof d.X=="object"){Object.entries(d.X).forEach(([k,v])=>{const e=LIB.find(x=>x.id==k);if(e)Object.assign(e,v)});try{localStorage.setItem(K("x"),JSON.stringify(d.X))}catch(e){}}sd();try{localStorage.setItem(K("c"),JSON.stringify(LIB.filter(e=>/^c\d+$/.test(e.id))))}catch(e){}save();render()}
+function applyBackup(d){if(!Array.isArray(d.H)||!Array.isArray(d.R)||!Array.isArray(d.B))throw 0;if(d.EX&&SD)SD.set(d.EX);(d.C||[]).forEach(c=>{if(!LIB.some(e=>e.id==c.id))LIB.push(c)});H=d.H;R=d.R;B=d.B;if(Array.isArray(d.P))P=d.P;if(+d.G)G=+d.G;if(d.PL&&d.PL.total)PL=d.PL;if(d.V&&typeof d.V=="object")VL=d.V;if(d.PS&&typeof d.PS=="object")PS=d.PS;if(Array.isArray(d.D))HID=new Set(d.D);if(d.U&&typeof d.U=="object"){UX=d.U;svU()}if(d.X&&typeof d.X=="object"){Object.entries(d.X).forEach(([k,v])=>{const e=LIB.find(x=>x.id==k);if(e)Object.assign(e,v)});try{localStorage.setItem(K("x"),JSON.stringify(d.X))}catch(e){}}sd();try{localStorage.setItem(K("c"),JSON.stringify(LIB.filter(e=>/^c\d+$/.test(e.id))))}catch(e){}save();render()}
 function backupCard(){return `<h2>Backup</h2><div class="card"><p class="mu" style="margin:0 0 10px">Exportar gera um arquivo .json com todos os seus dados. Guarde no Arquivos, iCloud Drive ou Google Drive. Para restaurar, escolha o arquivo abaixo e toque em Importar.</p><button class="pri" style="margin-bottom:12px" data-a="bex">Exportar arquivo de backup</button><label class="mu">Arquivo de backup<input class="q" type="file" id="bkf" accept=".json,.txt,application/json,text/plain" style="margin-top:4px"></label><div class="mu" style="margin-bottom:4px">ou cole o texto aqui</div><textarea class="q" id="bk" rows="4" placeholder="Texto do backup" style="font-size:12px"></textarea><div style="display:flex;gap:8px"><button class="sec" style="flex:1" data-a="bim">Importar</button><button class="sec" data-a="bcp">Copiar como texto</button></div><div class="mu" id="bkm" style="margin-top:8px"></div></div>`}
 function prCard(){const l=LIB.map(e=>({e,b:best(e.id),w:Math.max(0,...H.flatMap(h=>h.ex.filter(x=>x.id==e.id).flatMap(x=>x.sets.filter(s=>s.t!="W").map(s=>s.w))))})).filter(x=>x.b>0).sort((a,b)=>b.b-a.b).slice(0,5);
 return `<h2>Recordes pessoais</h2><div class="card">${l.map(x=>`<button class="ls" data-a="exd" data-v="${x.e.id}"><span><b>${x.e.n}</b></span><span class="mu">${x.w} kg · máx. est. ${Math.round(x.b)}</span></button>`).join("")||'<span class="mu">Registre treinos com carga para ver seus recordes.</span>'}</div>`}
@@ -516,7 +866,7 @@ let cal="DSTQQSS".split("").map(d=>`<span class="h">${d}</span>`).join("")+"<spa
 for(let d=1;d<=dim;d++){const k=iso(new Date(c.getFullYear(),c.getMonth(),d));cal+=`<span class="${set.has(k)?"w":""} ${k==iso(now)?"t":""}">${d}</span>`}
 A.innerHTML=`<h1>Perfil</h1>${sumCard()}<div class="card"><div class="st"><div><b>${wk.length}</b><span class="mu">treinos (7 dias)</span></div><div><b>${Math.round(wk.reduce((a,h)=>a+vol(h.ex),0)/1000*10)/10}t</b><span class="mu">volume</span></div><div><b>${last==null?"–":last}</b><span class="mu">dias sem treinar</span></div></div></div>
 <h2>Séries por músculo (7 dias)</h2><div class="card">${Object.entries(mc).sort((a,b)=>b[1]-a[1]).map(([m,n])=>`<div style="margin-bottom:8px"><div class="row"><span>${m}</span><span class="mu">${n}</span></div><div class="bar"><i style="width:${n/mx*100}%"></i></div></div>`).join("")||'<span class="mu">Sem treinos nos últimos 7 dias.</span>'}</div>
-${prCard()}${bodyCard()}<div class="hd2"><h2>${c.toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</h2><span><button class="sec" data-a="cm" data-v="-1" aria-label="Mês anterior">‹</button> <button class="sec" data-a="cm" data-v="1" aria-label="Próximo mês">›</button></span></div><div class="card"><div class="cal">${cal}</div></div>${contaCard()}${backupCard()}${demoCard()}${secCard()}${wipeCard()}`}
+${prCard()}${bodyCard()}<div class="hd2"><h2>${c.toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</h2><span><button class="sec" data-a="cm" data-v="-1" aria-label="Mês anterior">‹</button> <button class="sec" data-a="cm" data-v="1" aria-label="Próximo mês">›</button></span></div><div class="card"><div class="cal">${cal}</div></div>${SD.temaCard()}${contaCard()}${backupCard()}${demoCard()}${secCard()}${wipeCard()}`}
 function evo(id,sets){const o=uo(id),p=prev(id),w=sets.filter(t=>t.t!="W"),mw=Math.max(0,...w.map(t=>t.w)),mr=Math.min(...w.map(t=>t.r).concat([999])),tr=w.reduce((a,t)=>a+t.r,0);
 let t,sg;
 if(!p)t="Primeira vez registrado. Essa é a sua base.";
@@ -570,6 +920,7 @@ const evs=ex.map(e=>{const v=evo(e.id,e.sets);return`<div style="margin-bottom:1
 const prs=L.ex.reduce((a,e)=>a+e.sets.filter(s=>s.d&&s.pr).length,0),w={d:iso(new Date()),...(L.rid?{rid:L.rid}:{}),name:L.name+(L.part?" · "+L.part:""),dur:Math.round((Date.now()-L.t0)/1e3),ex};const skip=L.ex.filter(e=>!(L.part&&e.p&&e.p!=L.part)&&!e.sets.some(t=>t.d)).map(e=>e.id);if(skip.length)w.skip=skip;const rr0=L.rid&&R.find(x=>x.id==L.rid);if(rr0&&L.part){rr0.last=L.part;rr0.lastAt=Date.now()}S.rch=null;S.ordOk=rr0?reOrd(rr0,L.ex.map(e=>e.swFrom||e.id)):false;S.nxp=rr0&&rr0.abc?nextPart(rr0):"";if(rr0){const sw=L.ex.filter(e=>e.swFrom&&e.sets.some(t=>t.d)&&rr0.ex.some(o=>o[0]==e.swFrom)).map(e=>[e.swFrom,e.id]),ad=L.ex.filter(e=>e.added&&e.sets.some(t=>t.d)&&!rr0.ex.some(o=>o[0]==e.id)).map(e=>[e.id,e.sets.length,+e.sets[0].r||10,+e.sets[0].w||0]);if(sw.length||ad.length)S.rch={rid:rr0.id,n:rr0.n,sw,add:ad,part:L.part||"",ord:L.ex.map(e=>e.id)}}H.push(w);save();S.live=null;S.rest=null;S.tab="hist";renderLive();render();
 modal(`<h1 style="font-size:26px">Treino concluído</h1>${(()=>{const n=rotNext();return n?`<div class="card" style="border:2px solid #22C55E;text-align:center"><div class="mu">Próximo treino</div><div style="font-size:30px;font-weight:800;color:#22C55E">${esc(n.n)}</div></div>`:""})()}${S.nxp?`<div class="card" style="border:2px solid #22C55E;text-align:center"><div class="mu">Próximo treino</div><div style="font-size:30px;font-weight:800;color:#22C55E">Parte ${S.nxp}</div></div>`:""}${S.ordOk?`<div class="mu" style="margin:-4px 2px 10px">✓ A ordem dos exercícios foi salva na rotina.</div>`:""}<div class="card"><div class="st"><div><b>${ex.reduce((a,e)=>a+e.sets.length,0)}</b><span class="mu">séries</span></div><div><b>${Math.round(vol(ex)).toLocaleString("pt-BR")}</b><span class="mu">kg de volume</span></div><div><b>${prs}</b><span class="mu">recordes</span></div></div></div>${w.dur>10800?`<div class="card" style="border-color:#E5484D"><p style="margin:0 0 10px">Esse treino ficou registrado com <b>${fmtN(w.dur/3600)} horas</b>. Esqueceu de finalizar na hora?</p><button class="sec" style="width:100%" data-a="wk_ed" data-v="${H.length-1}">Corrigir duração</button></div>`:""}${S.rch?`<div class="card" id="rchb" style="border:2px solid var(--ac)"><b>Mudanças feitas no treino de hoje</b><div class="mu" style="margin-bottom:8px">Quer que elas fiquem na rotina <b>${esc(S.rch.n)}</b>?</div>${S.rch.sw.map(([f,t])=>`<div style="padding:3px 0">⇄ ${esc(X(f).n)} → <b>${esc(X(t).n)}</b></div>`).join("")}${S.rch.add.map(e=>`<div style="padding:3px 0">+ <b>${esc(X(e[0]).n)}</b> <span class="mu">${e[1]}×${e[2]}</span></div>`).join("")}<button class="pri" style="margin-top:10px" data-a="rch_y">Sim, salvar na rotina</button><button class="sec" style="width:100%;margin-top:8px" data-a="rch_n">Não, foi só hoje</button></div>`:""}${w.skip||ex.some(e=>e.plan)?`<div class="card" style="border:2px solid #F5B400"><b style="color:#F5B400">Ficou faltando hoje</b>${(w.skip||[]).map(id=>`<div style="padding:3px 0">• <b>${esc(X(id).n)}</b> <span class="mu">não feito</span></div>`).join("")}${ex.filter(e=>e.plan).map(e=>`<div style="padding:3px 0">• <b>${esc(X(e.id).n)}</b> <span class="mu">${e.sets.length} de ${e.plan} séries</span></div>`).join("")}<div class="mu" style="margin-top:6px">Fica marcado em amarelo no histórico.</div></div>`:""}<h2>Evolução</h2><div class="card">${evs}</div><p class="mu">Sessão ${Math.min(pn(),PL.total)} de ${PL.total} do plano registrada.</p><button class="pri" data-a="close">Ok</button>`)}
 document.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,v=b.dataset.v,L=S.live;
+if(a.startsWith("sd_")){SD.act(a,v,b);return}
 if(a=="tab"){S.tab=v;S.wipe=0;render()}else if(a=="close"){S.swap=null;modal(null)}
 else if(a=="empty")start("Treino livre",[]);else if(a=="resume")renderLive();
 else if(a=="go"){const r=R[+v];if(r.abc&&partsOf(r.ex).length)start(r.n,r.ex,{rid:r.id,parts:partsOf(r.ex),part:nextPart(r),rec:nextPart(r)});else start(r.n,r.ex,{rid:r.id})}
@@ -613,9 +964,9 @@ else if(a=="add"){if(S.swap!=null&&L.ex[S.swap]){const e=L.ex[S.swap],n=e.sets.l
 else if(a=="fin")finish();
 else if(a=="disc"){if(S.discard){S.live=null;S.rest=null;S.discard=false;renderLive();render()}else{S.discard=true;renderLive()}}
 else if(a=="tm")rest(+v);else if(a=="sw"){S.rest={up:true,start:Date.now()};updRest()}else if(a=="bm"){S.bm=v;render()}else if(a=="bsave"){const m=(BM.find(x=>x[0]==S.bm)||BM[0])[0],n=parseFloat($("bv").value.replace(",","."));if(n>0){B.push({d:iso(new Date()),m,v:n});save();render()}}else if(a=="bdel"){const i=+v,q=B.splice(i,1)[0];save();render();showUndo("Medida excluída",()=>{B.splice(i,0,q)})}else if(a=="pm"){S.pm=v;picker()}
-else if(a=="bex"){const t=JSON.stringify({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),U:UX,C:LIB.filter(e=>/^c\d+$/.test(e.id))}),fn="gymtrack-backup-"+iso(new Date())+".json";
+else if(a=="bex"){const t=JSON.stringify({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),U:UX,C:LIB.filter(e=>/^c\d+$/.test(e.id)),EX:SD.get()}),fn="gymtrack-backup-"+iso(new Date())+".json";
  try{const f=new File([t],fn,{type:"application/json"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Backup Gymtrack"}).then(()=>$("bkm").textContent="Arquivo "+fn+" gerado.").catch(()=>{})}else{const u=URL.createObjectURL(f),l=document.createElement("a");l.href=u;l.download=fn;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);$("bkm").textContent="Arquivo "+fn+" baixado."}}catch(e){$("bkm").textContent="Não foi possível gerar o arquivo. Use Copiar como texto."}}
-else if(a=="bcp"){const t=JSON.stringify({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),U:UX,C:LIB.filter(e=>/^c\d+$/.test(e.id))});$("bk").value=t;$("bkm").textContent="Backup gerado. Copie o texto acima.";try{navigator.clipboard.writeText(t).then(()=>$("bkm").textContent="Texto copiado.")}catch(e){}}
+else if(a=="bcp"){const t=JSON.stringify({v:1,H,R,B,P,PS,G,V:VL,PL,D:[...HID],X:xo(),U:UX,C:LIB.filter(e=>/^c\d+$/.test(e.id)),EX:SD.get()});$("bk").value=t;$("bkm").textContent="Backup gerado. Copie o texto acima.";try{navigator.clipboard.writeText(t).then(()=>$("bkm").textContent="Texto copiado.")}catch(e){}}
 else if(a=="bim"){const tx=$("bk").value;try{const d=pj(tx);if(!isBk(d))throw 0;applyBackup(d);$("bkm").textContent="Backup restaurado."}catch(e){$("bkm").textContent=bkErr(tx)}}
 else if(a=="nx")exForm("");else if(a=="ex_ed")exForm(v);
 else if(a=="ex_sv"){const n=$("en").value.trim(),m=$("em").value;if(n){const en=($("enx")||{}).value||"";if(v){const e=LIB.find(x=>x.id==v);e.n=n;e.m=m;if(en.trim()&&en.trim()!=enN(v))e.en=en.trim();else if(!en.trim())delete e.en;sx(v,n,m,e.en)}else addC({id:"c"+Date.now(),n,m,...(en.trim()?{en:en.trim()}:{})});modal(null);render();if(S.live)renderLive()}}
