@@ -31,6 +31,7 @@
 .sdbx{font-size:10px;font-weight:800;background:var(--wnc);color:#1A1405;border-radius:6px;padding:1px 5px;vertical-align:1px;white-space:nowrap}
 .sdbx2{margin-top:8px;font-size:13px;font-weight:700;color:var(--wnc)}
 .sdpill{color:#111;font-size:12px;font-weight:800;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.sdgh{display:flex;align-items:center;gap:8px}.sdgh .sdgt{flex:1}.sdgr{font-size:12px;white-space:nowrap}.sdcol{border:1px solid var(--ln);background:none;border-radius:10px;padding:4px 9px;font-size:12px;font-weight:700;color:var(--mu)}
 .sdpgc{width:100%;background:#fff;border-radius:8px;margin-bottom:10px;display:block}.sdres{opacity:.75}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -103,7 +104,7 @@ a.sec{text-decoration:none;color:inherit;display:inline-block}a.sec.sel{color:va
 <div class="rb" id="ut" style="bottom:calc(72px + env(safe-area-inset-bottom,0px))"></div>
 <div class="rb" id="rb"></div>
 <script>
-const VERSAO="0.45";
+const VERSAO="0.46";
 const DEMO=(()=>{try{return localStorage.getItem("hv-demo")=="1"}catch(e){return false}})(),K=n=>(DEMO?"hd-":"hv-")+n;
 const LIB=[["supino-hammer","Supino reto Hammer","Peito"],["cadeira-ext","Cadeira extensora","Quadríceps"],["rot-int","Rotação interna de ombro","Ombro"],["triceps-corda","Tríceps corda","Tríceps"],["agach-banco","Agachamento no banco","Quadríceps"],["supino-reto","Supino reto com barra","Peito"],["supino-inc","Supino inclinado com halteres","Peito"],["crucifixo","Crucifixo máquina","Peito"],["puxada","Puxada frontal","Costas"],["remada","Remada baixa","Costas"],["desenv","Desenvolvimento com halteres","Ombro"],["elev-lat","Elevação lateral","Ombro"],["rosca","Rosca direta","Bíceps"],["rosca-mart","Rosca martelo","Bíceps"],["triceps-testa","Tríceps testa","Tríceps"],["leg","Leg press 45°","Quadríceps"],["mesa-flex","Mesa flexora","Posterior"],["stiff","Stiff","Posterior"],["gluteo","Elevação pélvica","Glúteos"],["panturrilha","Panturrilha em pé","Panturrilha"],["abdominal","Abdominal na máquina","Abdômen"],["prancha","Prancha","Abdômen"]].map(([id,n,m])=>({id,n,m}));
 const slug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),nz=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -479,6 +480,7 @@ const persist=()=>{try{localStorage.setItem(K("ex"),JSON.stringify(EX))}catch(e)
 /* item guardado → campos calculados */
 function prep(it){const v=it.corr?it.corr.v:it.valor,q=(String(v).match(/^\s*([<>]=?|inferior a|superior a)/i)||[])[1]||"";const n=NUM(String(v).replace(/^\s*([<>]=?|inferior a|superior a)\s*/i,""));
  const o=Object.assign({},it,{num:isNaN(n)?null:n,q:q?(/^(<|inferior)/i.test(q)?"<":">"):"",valorEf:v});o.st=status(Object.assign({},o,{valor:v}));return o}
+const REC=()=>{try{return JSON.parse(localStorage.getItem("gt-sd-rec"))||{}}catch(e){return{}}};
 const coletas=()=>EX.c.slice().sort((a,b)=>a.data.localeCompare(b.data));
 const isoBR=s=>{const m=String(s).match(/(\d\d)\/(\d\d)\/(\d{4})/);return m?m[3]+"-"+m[2]+"-"+m[1]:""};
 const fdc=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"–";
@@ -490,9 +492,14 @@ const nomeK=k=>{const c=CAT.find(c=>c[0]==k);return c?c[1]:NOMER[k]||k};
 function serie(k){const out=[];coletas().forEach(c=>{const it=c.itens.find(i=>i.k==k);if(it)out.push({c,it:prep(it)})});return out}
 const COR={ok:"var(--okc)",limite:"var(--wnc)",fora:"var(--bdc)",sem:"var(--mu)"};
 const STX={ok:"Dentro da referência",limite:"No limite",fora:"Fora da referência",sem:"Sem referência no laudo"};
-function spark(s){const p=s.filter(x=>x.it.num!=null);if(p.length<2)return`<span class="sdsp"></span>`;const ys=p.map(x=>x.it.num),lo=Math.min(...ys),hi=Math.max(...ys),W=46,H=16;
- const pts=p.map((x,i)=>`${(2+i*(W-4)/(p.length-1)).toFixed(1)},${(hi==lo?H/2:H-2-(x.it.num-lo)/(hi-lo)*(H-4)).toFixed(1)}`).join(" ");
- return`<svg class="sdsp" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${COR[p[p.length-1].it.st]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
+function curva(P){const f=n=>n.toFixed(1);if(P.length<3)return"M"+P.map(p=>f(p[0])+","+f(p[1])).join(" L");let d="M"+f(P[0][0])+","+f(P[0][1]);
+ for(let i=0;i<P.length-1;i++){const a=P[i-1]||P[i],b=P[i],c=P[i+1],e=P[i+2]||c,t=.18;d+=` C${f(b[0]+(c[0]-a[0])*t)},${f(b[1]+(c[1]-a[1])*t)} ${f(c[0]-(e[0]-b[0])*t)},${f(c[1]-(e[1]-b[1])*t)} ${f(c[0])},${f(c[1])}`}return d}
+/* escala: a altura do gráfico representa a faixa de referência, não só a variação */
+function escala(vals,r){let lo,hi;if(r&&(r.min!=null||r.max!=null)){const a=vals.slice();if(r.min!=null)a.push(r.min);if(r.max!=null)a.push(r.max);lo=r.min==null?0:Math.min(...a);hi=Math.max(...a)}
+ else{const m=Math.max(...vals.map(Math.abs))||1;lo=Math.min(...vals)-m*.1;hi=Math.max(...vals)+m*.1}const p=(hi-lo)*.12||1;return[lo-p,hi+p]}
+function spark(s){const p=s.filter(x=>x.it.num!=null);if(p.length<2)return`<span class="sdsp"></span>`;const ys=p.map(x=>x.it.num),[lo,hi]=escala(ys,p[p.length-1].it.ref),W=50,H=22,c=COR[p[p.length-1].it.st];
+ const P=p.map((x,i)=>[3+i*(W-6)/(p.length-1),H-3-(x.it.num-lo)/((hi-lo)||1)*(H-6)]),d=curva(P),l=P[P.length-1];
+ return`<svg class="sdsp" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d} L${l[0].toFixed(1)},${H} L${P[0][0].toFixed(1)},${H} Z" fill="${c}" opacity=".18"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${l[0].toFixed(1)}" cy="${l[1].toFixed(1)}" r="2.4" fill="${c}"/></svg>`}
 function delta(s){const p=s.filter(x=>x.it.num!=null);if(s.length<2||p.length<2||p[p.length-1]!==s[s.length-1])return"";const a=p[p.length-2].it,b=p[p.length-1].it,d=b.num-a.num;
  if(Math.abs(d)<1e-9)return`<span class="sdar">=</span>`;const dec=Math.max((String(a.valorEf).split(",")[1]||"").length,(String(b.valorEf).split(",")[1]||"").length);
  return`<span class="sdar">${d>0?"▲":"▼"} ${Math.abs(d).toLocaleString("pt-BR",{maximumFractionDigits:Math.min(dec,2)})}</span>`}
@@ -503,7 +510,9 @@ function linha(k,ult){const s=serie(k);if(!s.length){if(!RESERVA.includes(k))ret
 function tab(A){const cs=coletas(),ult=cs[cs.length-1];S.sdv=S.sdv||"ex";
  let h=`<h1>Saúde</h1><div class="mu" style="margin:-8px 2px 12px">${ult?`Última coleta ${fdc(ult.data)} · ${esc(ult.lab||"laboratório")}`:"Seus exames de sangue, guardados por anos"}</div>`;
  if(ult){const its=ult.itens.map(prep),tot=its.filter(i=>i.st!="sem").length,ok=its.filter(i=>i.st=="ok"||i.st=="limite").length,lim=its.filter(i=>i.st=="limite").length,fo=its.filter(i=>i.st=="fora").length,sem=its.length-tot;
-  h+=`<div class="card"><div style="font-size:19px;font-weight:800">${ok} de ${tot} dentro da referência</div><div class="mu">Coleta de ${fdc(ult.data)} · ${lim} no limite · ${fo} fora${sem?` · ${sem} sem referência`:""}</div></div>`}
+  h+=`<div class="card"><div style="font-size:19px;font-weight:800">${ok} de ${tot} dentro da referência</div><div class="mu">Coleta de ${fdc(ult.data)} · ${lim} no limite · ${fo} fora${sem?` · ${sem} sem referência`:""}</div>${fo+lim?`<button class="sec" style="width:100%;margin-top:10px" data-a="sd_at">${S.sdAt?"Esconder":"Ver"} ${fo?`os ${fo} fora`:""}${fo&&lim?" e ":""}${lim?`${fo?"":"os "}${lim} no limite`:""}</button>`:""}</div>`;
+  if(S.sdAt&&fo+lim){const lr=st=>its.filter(i=>i.st==st).sort((a,b)=>GRUPOS.findIndex(g=>g[0]==a.g)-GRUPOS.findIndex(g=>g[0]==b.g)).map(i=>linha(i.k,ult)).join("");
+   h+=`<div class="card sdgc" style="border-color:var(--bdc)">${fo?`<div class="sdgt" style="color:var(--bdc)">Fora da referência (${fo})</div>${lr("fora")}`:""}${lim?`<div class="sdgt" style="color:var(--wnc);margin-top:${fo?10:0}px">No limite (${lim})</div>${lr("limite")}`:""}</div>`}}
  h+=`<div style="display:flex;gap:8px;margin-bottom:12px"><button class="pri" style="flex:1;font-size:15px" data-a="sd_imp">Importar PDF</button>${ult?`<button class="sec" style="flex:1" data-a="sd_ia">Perguntar a uma IA</button>`:""}</div><input type="file" id="sdf" accept="application/pdf,.pdf" hidden>`;
  if(!ult){A.innerHTML=h+`<div class="card"><b>Comece pelo laudo do laboratório</b><p class="mu" style="margin:6px 0 0">Toque em Importar PDF e escolha o laudo. O app lê os valores aqui mesmo no iPhone, sem enviar para nenhuma IA, e mostra tudo para você conferir antes de guardar.</p></div>`;return}
  h+=`<div style="display:flex;gap:6px;margin-bottom:12px"><button class="sec ${S.sdv=="ex"?"sel":""}" style="flex:1" data-a="sd_v" data-v="ex">Exames</button><button class="sec ${S.sdv=="co"?"sel":""}" style="flex:1" data-a="sd_v" data-v="co">Coletas (${cs.length})</button></div>`;
@@ -513,10 +522,12 @@ function tab(A){const cs=coletas(),ult=cs[cs.length-1];S.sdv=S.sdv||"ex";
   if(!cat.length&&!ext.length&&!uri.length)return;let ks=[...cat,...ext],mais="";
   if(DESTAQUE[g]&&!S.sdx[g]){const r=ks.filter(k=>!DESTAQUE[g].includes(k));ks=DESTAQUE[g].filter(k=>todos.has(k));if(r.length)mais=`<button class="sdmais" data-a="sd_x" data-v="${g}">Ver hemograma completo (${r.length} itens)</button>`}
   else if(DESTAQUE[g])mais=`<button class="sdmais" data-a="sd_x" data-v="${g}">Mostrar só os principais</button>`;
+  const rec=REC()[g];if(rec){const st=[...cat,...ext].map(k=>{const x=serie(k);return x.length?x[x.length-1].it.st:null}).filter(Boolean).concat(uri.length?[cs.filter(c=>c.itens.some(urina)).pop().itens.filter(urina).map(prep).some(i=>i.st=="fora")?"fora":"ok"]:[]),f=st.filter(x=>x=="fora").length,l=st.filter(x=>x=="limite").length;
+   h+=`<div class="card sdgc"><div class="sdgh"><span class="sdgt">${t}</span><span class="mu sdgr">${st.length} exame${st.length>1?"s":""}${f?` · <b style="color:var(--bdc)">${f} fora</b>`:""}${l?` · <b style="color:var(--wnc)">${l} no limite</b>`:""}${!f&&!l?" · tudo dentro":""}</span><button class="sdcol" data-a="sd_rec" data-v="${g}">Expandir</button></div></div>`;return}
   let rows=ks.map(k=>linha(k,ult)).join("");
   if(uri.length){const u=cs.filter(c=>c.itens.some(urina)).pop(),ui=u.itens.filter(urina).map(prep),f=ui.filter(i=>i.st=="fora").length;
    rows+=`<button class="sdrw" data-a="sd_uri"><i class="sddot" style="background:${COR[f?"fora":"ok"]}"></i><span class="sdn">Urina<small class="mu"> · ${fds(u.data)}</small></span><span class="sdsp"></span><span class="sdv" style="font-size:13px">${f?f+" alterado"+(f>1?"s":""):"normal"}</span><span class="sdar">›</span></button>`}
-  h+=`<div class="card sdgc"><div class="sdgt">${t}</div>${rows}${mais}</div>`});
+  h+=`<div class="card sdgc"><div class="sdgh"><span class="sdgt">${t}</span><button class="sdcol" data-a="sd_rec" data-v="${g}">Recolher</button></div>${rows}${mais}</div>`});
  A.innerHTML=h+`<div class="mu" style="margin:4px 2px 0">Verde: dentro da referência · Amarelo: dentro, mas perto do limite (últimos 10% da faixa) · Vermelho: fora. A referência é a que veio no laudo de cada coleta.</div>`}
 /* ---------- coletas: linha do tempo ---------- */
 const PESO={ok:0,limite:1,fora:2};
@@ -535,7 +546,7 @@ function grande(s){const p=s.filter(x=>x.it.num!=null);if(!p.length)return"";con
  let g="";if(r.min!=null||r.max!=null){const a=Y(r.max!=null?r.max:hi),b=Y(r.min!=null?r.min:lo);g+=`<rect x="${L}" y="${a}" width="${W-L-R}" height="${Math.max(1,b-a)}" fill="var(--okc)" opacity=".14"/>`;
   [r.min,r.max].forEach(v=>{if(v!=null)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--okc)" stroke-dasharray="4 3" opacity=".7"/><text x="${W-R}" y="${Y(v)-3}" font-size="9" text-anchor="end" fill="var(--okc)">${v.toLocaleString("pt-BR")}</text>`})}
  for(let k=0;k<=3;k++){const v=lo+(hi-lo)*k/3;g+=`<text x="${L-5}" y="${Y(v)+3}" text-anchor="end" font-size="9" fill="var(--mu)">${(Math.round(v*100)/100).toLocaleString("pt-BR")}</text>`}
- let ln="";if(p.length>1)ln=`<polyline points="${p.map((x,i)=>X(t[i])+","+Y(x.it.num)).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round"/>`;
+ let ln="";if(p.length>1){const P=p.map((x,i)=>[X(t[i]),Y(x.it.num)]),d=curva(P);ln=`<path d="${d} L${P[P.length-1][0].toFixed(1)},${H-B} L${P[0][0].toFixed(1)},${H-B} Z" fill="var(--ac)" opacity=".16"/><path d="${d}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`}
  const lb=p.map((x,i)=>(p.length<=6||i==0||i==p.length-1)?`<text x="${X(t[i])}" y="${H-10}" font-size="9" text-anchor="${p.length>1&&i==0?"start":p.length>1&&i==p.length-1?"end":"middle"}" fill="var(--mu)">${fds(x.c.data)}</text>`:"").join("");
  const dt=p.map((x,i)=>`<circle cx="${X(t[i])}" cy="${Y(x.it.num)}" r="5" fill="${COR[x.it.st]}" stroke="var(--sf)" stroke-width="2"/>`).join("");
  return`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Evolução">${g}${ln}${dt}${lb}</svg><div class="mu" style="font-size:12px">Faixa verde: referência do laudo mais recente.</div>`}
@@ -648,7 +659,7 @@ function merge(a,b){a=a||{c:[],del:[],pdel:[]};b=b||{c:[],del:[],pdel:[]};const 
 /* ---------- cliques ---------- */
 function act(a,v,b){
  if(a=="sd_imp"){const f=$("sdf");if(f){f.value="";f.click()}}
- else if(a=="sd_v"){S.sdv=v;render()}else if(a=="sd_x"){S.sdx=S.sdx||{};S.sdx[v]=!S.sdx[v];render()}
+ else if(a=="sd_v"){S.sdv=v;render()}else if(a=="sd_at"){S.sdAt=!S.sdAt;render()}else if(a=="sd_rec"){const r=REC();r[v]=!r[v];try{localStorage.setItem("gt-sd-rec",JSON.stringify(r))}catch(e){}render()}else if(a=="sd_x"){S.sdx=S.sdx||{};S.sdx[v]=!S.sdx[v];render()}
  else if(a=="sd_det"){S.sdDet=v;detalhe(v)}else if(a=="sd_uri"){S.sdDet=null;verUrina()}
  else if(a=="sd_col"){S.sdDet=null;verColeta(v)}else if(a=="sd_pdf")verPdf(v);else if(a=="sd_shp")shPdf();
  else if(a=="sd_apg")apagar(v);else if(a=="sd_ok")confirmar();else if(a=="sd_can"){S.sdN=null;modal(null)}
